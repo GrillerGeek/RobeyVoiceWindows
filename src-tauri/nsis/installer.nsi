@@ -194,7 +194,7 @@ Function PageInstallType
   ${NSD_CreateRadioButton} 30u 35u -30u 12u "Normal Installation (recommended)"
   Pop $InstallTypeRadioNormal
 
-  ${NSD_CreateLabel} 44u 49u -44u 20u "Installs to your system with Start Menu shortcuts, uninstaller, and auto-update support."
+  ${NSD_CreateLabel} 44u 49u -44u 20u "Installs to your system with Start Menu shortcuts and an uninstaller. Updates are installed manually."
   Pop $0
 
   ${NSD_CreateRadioButton} 30u 75u -30u 12u "Portable Installation"
