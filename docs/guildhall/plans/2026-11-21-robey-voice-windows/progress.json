@@ -6,9 +6,9 @@
   "host": "codex",
   "plan_path": "docs/guildhall/plans/2026-11-21-robey-voice-windows.md",
   "status": "active",
-  "note": "Source prepared on main; starting native Windows packaging",
+  "note": "Native run 44927384462 at e0c4233 compiling; prior missing-DLL test-host failure preserved; docs and independent artifact review underway",
   "started_at": 1795275063.892069,
-  "updated_at": 1795276780.330942,
+  "updated_at": 1795284250.726974,
   "milestones": [
     {
       "id": "plan",
@@ -56,40 +56,42 @@
       "id": "package",
       "name": "Package",
       "goal": "Produce and audit the native Windows installer",
-      "state": "current",
+      "state": "done",
       "loop": {
         "reason": "one packaging correction",
         "limit": 2
       },
-      "pass": 1,
+      "pass": 2,
       "started_at": 1795276780.278665,
-      "finished_at": null,
+      "finished_at": 1795283818.905377,
       "added_because": null,
-      "skipped_why": null
+      "skipped_why": null,
+      "completed": true
     },
     {
       "id": "review",
       "name": "Review",
       "goal": "Complete independent technical and delivery reviews",
-      "state": "upcoming",
+      "state": "done",
       "loop": {
         "reason": "one review correction round",
         "limit": 2
       },
-      "pass": 0,
-      "started_at": null,
-      "finished_at": null,
+      "pass": 1,
+      "started_at": 1795283818.9493089,
+      "finished_at": 1795284250.678779,
       "added_because": null,
-      "skipped_why": null
+      "skipped_why": null,
+      "completed": true
     },
     {
       "id": "release",
       "name": "Release",
       "goal": "Publish a traceable preview installer",
-      "state": "upcoming",
+      "state": "current",
       "loop": null,
-      "pass": 0,
-      "started_at": null,
+      "pass": 1,
+      "started_at": 1795284250.726974,
       "finished_at": null,
       "added_because": null,
       "skipped_why": null
@@ -130,5 +132,13 @@
       "done_at": null
     }
   ],
-  "loops": []
+  "loops": [
+    {
+      "milestone": "package",
+      "pass": 2,
+      "why": "Native formatter output required a whitespace-only correction; final installer wording also reconciled",
+      "at": 1795279688.9034371,
+      "within_limit": true
+    }
+  ]
 }

@@ -4,15 +4,19 @@ Robey Voice 0.1.0 is a local dictation preview for **Windows 11 x64 on an Intel 
 
 ## Before Installing
 
-**Download link: PENDING — Jason has not supplied a built installer.**  
-**Installer filename and SHA256: PENDING — do not install an unverified substitute.**
+Distribution target: [Robey Voice v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1), with this [Windows installer](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/Robey%20Voice_0.1.0_x64-setup.exe). Use these assets after Jason makes the release available.
 
-The preview will be an unsigned NSIS `.exe`. It has no verified Windows publisher signature. First model download and setup of a missing Microsoft WebView2 runtime need internet access. Once the model and runtime are installed, local dictation is intended to work offline; the native offline check is still pending.
+File: `Robey Voice_0.1.0_x64-setup.exe` (16,415,893 bytes).  
+SHA256: `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`.
 
-When Jason supplies the file and its matching checksum, open PowerShell and check the downloaded file, replacing the example filename with the exact name supplied:
+App version is 0.1.0. The same release includes `RELEASE-SHA256SUMS.txt` for its assets, `RobeyVoice-0.1.0-windows-x64-evidence.zip`, `BUILD-FACTS.json` and `artifact-audit-report.md`; the evidence ZIP contains the original CI `SHA256SUMS.txt`. The [release notes](robey-voice-windows-release-notes.md) and [validation report](robey-voice-windows-validation.md) distinguish the successful CI package check from pending testing on your PC.
+
+The preview is an unsigned NSIS `.exe`. It has no verified Windows publisher signature. First model download and setup of a missing Microsoft WebView2 runtime need internet access. Once the model and runtime are installed, local dictation is intended to work offline; the native offline check is still pending.
+
+After Jason publishes the file, open PowerShell and check the download:
 
 ```powershell
-Get-FileHash -Algorithm SHA256 -LiteralPath "$HOME\Downloads\EXACT-INSTALLER-FILENAME.exe"
+Get-FileHash -Algorithm SHA256 -LiteralPath "$HOME\Downloads\Robey Voice_0.1.0_x64-setup.exe"
 ```
 
 Compare the entire hash with Jason's supplied SHA256. If it differs, stop and report it. A matching checksum checks that you received the specified file; it does not provide a publisher signature.

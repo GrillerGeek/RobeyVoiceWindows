@@ -6,7 +6,7 @@ Robey Voice 0.1.0 is a branded preview based on Handy. Press a configurable shor
 
 ## Preview Status
 
-Earlier source/frontend checks and the final 13-test browser suite have passed. The executable-isolation amendment is being verified separately; its new regression/native checks remain pending. A native Windows installer, its download link and checksum, installed-app testing, and Angie's acceptance are **pending**. See the [validation report](docs/robey-voice-windows-validation.md) for exact evidence and outstanding gates. Browser tests do not establish native microphone, shortcut, paste, offline, or performance behavior.
+Source/configuration checks passed 7/7 and the browser suite passed 13/13. [Native run 44927384462](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44927384462) successfully built and audited an unsigned installer from `e0c4233952f98d754db7207052e25948186bee4d`. Independent audit passed 116 factual checks with no blocking packaging findings; artifact checksums, source/run, runtime payload and shipped notices were verified. CI used a temporary portable installation and synthetic CPU file transcription. Windows 11 microphone, shortcut, paste, offline, side-by-side behavior and Angie acceptance remain pending. See the [validation report](docs/robey-voice-windows-validation.md) and [execution report](docs/robey-voice-windows-execution-report.md) for scope and remaining checks.
 
 - Intended platform: Windows 11 x64 on Intel or AMD. A dedicated GPU is not required by the intended CPU-capable flow; hardware performance remains unverified.
 - Package: unsigned NSIS `.exe` preview only. No Windows publisher signing credentials are available. An Apple signing certificate cannot sign a Windows publisher identity.
@@ -15,9 +15,9 @@ Earlier source/frontend checks and the final 13-test browser suite have passed. 
 
 ## Quick Start
 
-The installer is not yet available. Do not use Handy's releases or package-manager entries as Robey Voice downloads.
+The intended distribution target is [v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1), with a [standalone installer](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/Robey%20Voice_0.1.0_x64-setup.exe), `RobeyVoice-0.1.0-windows-x64-evidence.zip`, SHA256SUMS and BUILD-FACTS. Product/file version is 0.1.0. Use assets after Jason makes that release available. See the [release notes](docs/robey-voice-windows-release-notes.md). Do not use Handy's releases or package-manager entries as Robey Voice downloads.
 
-When Jason supplies the audited installer and matching SHA256, follow [Angie's setup guide](docs/angie-setup.md): verify the file, install under normal Windows policies, allow microphone access, choose a local model, and try a short sentence in normal, non-elevated Notepad. If unsigned software is blocked, stop and report the message to Jason. Do not disable security protections.
+After Jason publishes the audited installer, follow [Angie's setup guide](docs/angie-setup.md): verify the file, install under normal Windows policies, allow microphone access, choose a local model, and try a short sentence in normal, non-elevated Notepad. If unsigned software is blocked, stop and report the message to Jason. Do not disable security protections.
 
 ## How It Works
 
@@ -56,4 +56,4 @@ Robey Voice derives from [Handy](https://github.com/cjpais/Handy) v0.10.1, commi
 
 Handy's complete MIT copyright, permission text, and disclaimer are preserved unchanged in [LICENSE](LICENSE), including Copyright (c) 2025 CJ Pais. Original Jason Robey microphone/wave artwork, its SVG source and PNG/ICO derivatives are separately **GPL-3.0-only**; this artwork notice does not relicense Handy code. The original SVG is in [src/assets/robey-voice.svg](src/assets/robey-voice.svg) and bundled as `resources/brand/robey-voice.svg`.
 
-Dependencies, native runtimes, fonts, VAD, and user-downloaded speech models retain their own licenses. The bundle is not exclusively MIT. See [third-party notices](src-tauri/resources/licenses/THIRD-PARTY-NOTICES.txt) and [GPL artwork terms](src-tauri/resources/licenses/GPL-3.0-only.txt). The Windows workflow generates the locked Rust/frontend/native inventories and includes notices in the package; complete distributed-inventory verification remains pending until the native packaging gate passes.
+Dependencies, native runtimes, fonts, VAD, and user-downloaded speech models retain their own licenses. The bundle is not exclusively MIT. See [third-party notices](src-tauri/resources/licenses/THIRD-PARTY-NOTICES.txt) and [GPL artwork terms](src-tauri/resources/licenses/GPL-3.0-only.txt). The Windows workflow generates the locked Rust/frontend/native inventories and includes notices in the package; CI generated and packaged the inventories; independent audit verified all 13 shipped notice files. Two MIT metadata-only source-text gaps remain disclosed distributor follow-ups, not legal certification.

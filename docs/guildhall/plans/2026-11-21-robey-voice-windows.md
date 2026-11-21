@@ -1,7 +1,7 @@
 # Robey Voice Windows execution plan
 
 Started: 2026-11-21. Mode: bounded feature implementation, based on Handy v0.10.1.
-Status: application source checks green; native packaging and UI/documentation verification in progress.
+Status: exact candidate `e0c4233` passed native Windows run `44927384462`; independent artifact audit and closing review are underway.
 
 ## Context and authority
 
@@ -54,11 +54,11 @@ Canonical review surface: this repository's Markdown Spec, plan, reports and sou
 - [x] Run new acceptance tests; inspect actual RED classification; freeze accepted test files/hashes.
 - [x] Implement minimal identity, branding, local defaults, cache isolation and update enforcement; preserve frozen tests.
 - [x] Add a native Windows x64 build/audit workflow without inherited signing/publication dependencies.
-- [ ] Verify GREEN, frontend build/lint/format/translations and applicable Rust checks; one implementer retry for the combined gate.
-- [ ] Push reviewed concrete source and run native Windows packaging; inspect installed payload and CPU enumeration.
-- [ ] Generate installer checksum, source/build/resource provenance and explicit unsigned status.
-- [ ] Run independent security, reliability, operations, observability, accessibility and UI verification; write scoped documentation.
-- [ ] Required post-green technical review of all relevant final source/tests/docs and evidence.
+- [x] Verify GREEN, frontend build/lint/format/translations and applicable Rust checks; actual CI environment corrections recorded below.
+- [x] Push reviewed concrete source and run native Windows packaging; inspect installed payload and CPU enumeration.
+- [x] Generate installer checksum, source/build/resource provenance and explicit unsigned status.
+- [x] Run independent security, reliability, operations, observability, accessibility and UI verification; write scoped documentation (final package facts pending).
+- [x] Required post-green technical review of all relevant final source/tests/docs and evidence.
 - [ ] Commit source, preserve auditable baseline, publish a clearly labeled preview with exact downloadable artifact and source.
 - [ ] Deliver short install/setup/recovery instructions and honest validation report.
 - [ ] Jason/Angie perform native interactive Windows acceptance and review branding; record pending until actually observed.
@@ -124,7 +124,83 @@ Scope: `Sidebar.tsx`, `ShortcutInput.tsx`, theme tokens, the new license button'
 - Documentation is aligned with the process amendment and actual 13-test frontend evidence at `d43ebe9`; all four targeted Prettier checks and verbatim-boundary comparisons pass. New isolation test was then still marked pending in that conservative snapshot; root has since verified it passed. All native installer/run/hash/human fields remain pending until actual Windows evidence arrives.
 - GitHub account authorization was checked without displaying credentials; existing repo/workflow scopes support the authorized push and native build. Source candidate is ready for its first native Windows run, with no force-push, signing secret or security bypass.
 - Source candidate `f2eaf50c98eb86402ba65fa532b35665ba39a941` was pushed to the new `main`, which is now the repository default. The automatic [source quality run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44924199496) passed on that exact source. Initial native dispatch returned workflow-not-found while GitHub had registered only the push-triggered workflow; the native workflow file is independently verified present on main. A follow-up main push records this evidence and allows default-branch manual-workflow registration. No native execution is claimed from the dispatch attempt.
+- Manual-workflow registration required changing the workflow files after main became default; a plain plan-only push still returned 404. The meaningful SHA-based `run-name` metadata update `322c8b5` preserved triggers/permissions/jobs and registered both manual workflows. Its [source-quality run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44924529565) passed.
+- First [native Windows run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44924529206), source `322c8b517a533684e1824ab34a31de01f0dfdde4`, passed tool setup, Vulkan/SPIRV/VC-runtime prerequisites, frozen dependency install, frontend checks and all seven config assertions. It failed only Rust formatting before tests/clippy/installer. Exact formatter output required indentation alignment on seven method-chain/comment lines in `managers/model.rs`; `ea0156e` applies only whitespace, independently checked with an empty whitespace-insensitive diff and unchanged inline tests.
+- Second native run `44924813744` at `ea0156e373cf0d653e405637473fdc42108faa9d` was explicitly cancelled as superseded during Rust checks, not marked passed or misclassified as a product failure. Operations review found one remaining installer label still promising automatic updates. The single-literal correction `ba8beef29b46ebaf6519b238f9b16d118c388d9b` now accurately promises manual updates, with no logic change.
+- Current [native candidate run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44925334812) is pinned to `ba8beef29b46ebaf6519b238f9b16d118c388d9b`; started 2026-11-21 16:34:42 UTC, Rust checks started 16:36:29 UTC. Setup and frontend/config steps passed; no installer, checksum, successful native tests, CPU result or optional transcription result is claimed until the run actually supplies them. An independent artifact auditor monitors only this exact run/ref and will verify downloaded bytes against all manifests before release.
+- All selected source reviewers returned: security 0 high/0 medium/1 information item after correction; accessibility resolved 3 high/2 medium with 1 information item remaining; reliability 0 high/0 medium/3 low CI-only timeout follow-ups; observability 0 high/0 medium/1 low manual-link rejection-feedback follow-up; operations supplied deploy/watch/rollback/on-call/open-question sections and its installer wording correction is committed. Closing technical review remains gated on native package evidence and final documentation.
+- Follow-up owners: Windows build maintainer (Jason/Codex) owns bounded installer/SAPI/cargo-inventory subprocess deadlines in the next CI maintenance pass; the job already has a 150-minute global deadline. Windows UI maintainer owns explicit manual-release-link failure feedback and untranslated English passages before broader locale claims. Windows distribution maintainer preserves/rechecks the two upstream MIT metadata-only notice gaps; no missing copyright owner is invented and no exhaustive legal certification is claimed. These findings do not establish a core dictation failure.
 
 ## Lessons and interruptions
 
 The successful Mac installation does not validate Windows. Handy's upstream updater and signing defaults must be removed, and its inherited HF cache behavior requires active isolation beyond renaming the app. Progress/worker evidence will be appended here as gates complete; interrupted or blocked checks remain explicit.
+
+- Native run `44925334812` failed after successful Rust compilation when the lib-test executable exited `0xc0000135` (missing DLL) before any test cases ran. No installer was produced. The staged runtime existed elsewhere; correction `e0c4233952f98d754db7207052e25948186bee4d` adds a CI helper that locates actual Cargo lib-test artifacts, co-locates the existing staged DLLs with hash checks, runs the unchanged tests, and records compile/test results. It does not skip tests or weaken the separate installer audit with its stripped build-tool PATH. Replacement [native run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44927384462) has passed frontend/config prerequisites and is compiling Rust; no result is presumed. Failure evidence is retained independently under task-local delivery records.
+
+- Replacement native run `44927384462` passed Rust formatting, unchanged library tests through the staging helper, and clippy at 17:14:57 UTC. Complete dependency notice generation also passed; unsigned NSIS assembly started 17:19:45 UTC and remains running at the 17:24:59 UTC checkpoint. Root rechecked all four key frozen test hashes unchanged and confirmed all eight normative boundaries are present verbatim in both validation and execution-report drafts. No installer outcome is inferred from these intermediate gates.
+
+- Exact-candidate [source-quality run 44927384933](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44927384933) succeeded at `e0c4233952f98d754db7207052e25948186bee4d`. The independent artifact auditor verified that result separately; installer assembly remains pending.
+
+- Native run `44927384462` completed SUCCESS at 2026-11-21 17:41:23 UTC for exact source `e0c4233952f98d754db7207052e25948186bee4d`. Root independently verified all required steps: Rust checks, notice inventories, unsigned NSIS assembly, actual temporary installed-payload/CPU audit, provenance/checksums and artifact upload. The independent auditor is checking downloaded bytes. Interactive Windows and Angie acceptance remain pending; package success is not microphone/paste/offline evidence.
+
+## Operations runbook, reviewer stdout at native-build milestone
+
+The following reviewer output is preserved verbatim for the closing review and PR-draft handoff. Its pending artifact/release questions are checkpoint facts; subsequent plan entries reconcile them with actual audit and publication evidence.
+
+### Deploy plan
+
+- **Native packaging milestone passed:** run `44927384462` completed successfully at `2026-11-21T17:41:23Z`, building exact source `e0c4233952f98d754db7207052e25948186bee4d`. The workflow completed NSIS temporary portable installation, payload/CPU audit, provenance generation and artifact upload.
+- **Hold distribution:** independent verification of downloaded artifact bytes, installer hash and probe facts is in progress. Closing review and release-fact reconciliation remain required. No GitHub prerelease or durable download is established yet.
+- After independent audit and closing review, create the planned durable GitHub prerelease `v0.1.0-preview.1` at the exact built source. Attach the verified installer, `BUILD-FACTS.json`, `SHA256SUMS.txt`, evidence and notices. Publish the installer’s actual SHA256 and successful run URL in the handoff.
+- Refresh README, BUILD, validation and Angie setup with actual source/run/artifact facts. Preserve separate native interactive and human acceptance gates.
+- The build uses MSVC x64/Windows SDK, app-local CRT/OpenMP redistributables, Rust components, Bun 1.4.5, CMake, Vulkan SDK 1.4.309.0, SPIRV-Headers and tracked hash-verified Silero VAD. No signing credentials or core-service credentials are required.
+- The Rust-test helper stages hash-checked existing runtime DLLs beside library-test executables. The installer audit independently strips build paths; test-host DLL staging is not installer completeness evidence.
+- Pilot manually on a deliberately configured Windows 11 x64 Intel/AMD test machine. Complete all eight edge cases, native dictation/offline checks and accessibility checks before recording those gates as passed. CI package loading/device enumeration cannot establish microphone, shortcut, paste or Angie acceptance.
+- Distribution is manual; there is no rollout flag. The updater is structurally disabled, and installer text now states manual updates. End users explicitly download a local model and, when absent, WebView2. Optional cloud post-processing stays off.
+
+### What to watch (first hour)
+
+- **Installer integrity and policy:** exact delivered SHA256, expected unsigned state, distinct Robey Voice installation/registration and normal Windows prompts. Record policy/runtime blocks and stop without bypasses.
+- **Isolation:** packaged process is `robey-voice.exe`; Handy stays running and usable through normal install, upgrade and removal. Compare only deliberately created synthetic markers in each app’s separate stores.
+- **First run:** onboarding opens without recording/startup; local defaults persist after restart; private data, WebView and Hugging Face cache resolve beneath Robey Voice’s own root.
+- **Core flow:** five synthetic ordinary-editor dictations produce nonempty recoverable history and return to idle. Record hardware, microphone, model/revision, CPU/GPU selection and observed timing.
+- **Recovery:** microphone denial/disconnect, model interruption, shortcut contention, cancellation and restricted-target insertion leave actionable states and recoverable text. Distinguish attempted paste from observed insertion.
+- **Offline/manual updates:** three network-blocked dictations, history copy and relaunch succeed after setup; persisted updater opt-in cannot enable requests or installation. Explicit downloads/clicked links are separate traffic.
+
+### Rollback plan
+
+1. Stop distribution and mark the affected source/run/installer hash withdrawn. Quit **Robey Voice** through its tray.
+2. For a normal installation, uninstall **Robey Voice** through Windows Settings. Leave its data-deletion checkbox unchecked when retaining settings/history/recordings/models/cache. For portable mode, retain its separate folder and `Data` while diagnosing.
+3. No previous known-good Robey Voice installer is established. Do not substitute Handy, assume downgrade compatibility or copy Robey Voice data into Handy.
+4. Correct/revert the offending source change, then rebuild and repeat the native package gate before supplying a replacement.
+5. Only delete Robey Voice data when the user explicitly chooses removal. Normal uninstall’s checkbox targets its identifier-derived roaming/local folders; portable deletion removes that installation’s `Data`. Native normal-uninstall deletion/isolation behavior remains unverified. Do not touch Handy folders or unrelated stores.
+
+### On-call notes
+
+- Entry points: `docs/angie-setup.md`, `BUILD.md`, `docs/robey-voice-windows-validation.md`, [successful native run](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44927384462) and its artifact evidence.
+- This is a family desktop preview, with no monitored backend, telemetry, alert service or stated SLO. Support begins with Jason and bounded, synthetic reproduction.
+- Expected installed data root is `%APPDATA%\com.jasonrobey.robeyvoice.windows`; confirm using **Open App Data Folder**. Portable data lives beside its executable under `Data`. Do not collect personal recordings, transcripts, settings credentials or another app’s real data.
+- Missing GPU enumeration does not imply CPU failure. CPU enumeration does not prove model loading or dictation performance. Inspect the optional synthetic file probe separately; its facts remain pending independent audit.
+- Recover failed insertion through History → Copy into an allowed normal-user target. Never elevate the app to overcome input restrictions.
+- CI artifacts expire after 30 days; failure diagnostics expire after seven. The workflow uploads artifacts but creates no GitHub release. The planned prerelease must supply durable distribution.
+- No automatic update recovery exists. Replacement installation and data retention require explicit native verification.
+
+### Open ops questions
+
+- Does independent artifact verification confirm the exact installer SHA256, built source, complete payload/provenance/notices and optional probe result? Align release facts only after that audit.
+- Has closing review cleared creation of `v0.1.0-preview.1`, and does its tag resolve to exact built source `e0c4233952f98d754db7207052e25948186bee4d`?
+- Who will execute and record the Windows 11 interactive, normal side-by-side installation/upgrade/uninstall, missing-WebView2, policy, deletion and screen-reader checks? These remain pending.
+- Does Angie’s actual hardware and device policy permit this unsigned preview, and which microphone, model, shortcut and target apps meet her needs? Angie acceptance remains pending.
+- Which validated build will become the retained rollback candidate after the first successful pilot? Until one exists, rollback is removal with deliberate data retention.
+
+## Exact package audit and closing evidence
+
+Independent audit `.robey-local/delivery/native-44927384462/artifact-audit-report.md` passed 116 factual checks with no blocking packaging finding. Root independently recomputed all 28 artifact checksums. Installer `Robey Voice_0.1.0_x64-setup.exe`: 16,415,893 bytes; SHA256 `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`. Official 29-file CI ZIP: 16,525,597 bytes; SHA256 `003e1862560e9121de82c5af985d75e029c960a0eac5dc902d22fcfeb233690e`, matching hosted digest and extracted files. The CI inventory has 56 files, 22 DLLs and 13 notices; unique robey-voice.exe, no handy.exe. Rust library tests: 342 passed, 0 failed, 20 ignored; clippy passed with warnings (no warning-free claim). CPU enumeration succeeded with SDK/build paths stripped. Optional CPU CLI transcription matched the exact synthetic SAPI phrase; no model/WAV is distributed and no usable Vulkan GPU enumerated. These do not establish microphone, shortcuts, paste, offline flow, side-by-side installation, performance or Angie acceptance.
+
+The exact source archive `RobeyVoice-0.1.0-source-e0c4233.tar.gz` has SHA256 `58e258016ad44d521b0bc207c757a79a7f9e45352106fa755c299328b1a37674`. Planned prerelease tag points to exact built commit `e0c4233952f98d754db7207052e25948186bee4d`; documentation-only main will advance separately. All notice inventories physically present; the two disclosed MIT metadata-only source-text gaps remain distributor follow-ups, not legal certification. The native package gate is complete; closing review and publication remain.
+
+## Closing technical review
+
+Fresh independent reviewer `windows_closing_review` returned **PASS for source/configuration and native packaging closure, permitting the labeled built-preview publication**. It reviewed all 137 changed tracked paths, current untracked reports, full current Spec, every Expectation/edge/Boundary/Deliverable and actual native/source evidence. It independently reran 7/7 configuration assertions, verified frozen hashes and empty inherited-test diff, RED/GREEN logs, 28 artifact checksums/29 files, six source integrity hashes, source/CI ZIP digests and 13 notice hashes. No new blocker/high/medium findings or missing mandatory source/native automation. Native interactive Windows/Angie gates remain pending. The final execution-report closing entries, this plan/progress, PR draft and observed release publication are permitted pending orchestration outputs, not missing implementation.
+
+Residuals retain owners: low CI subprocess deadlines at audit.ps1:27/file-probe.ps1:28/license-inventory.mjs:147 (Windows build maintainer next maintenance; global deadline exists); low manual-link error feedback at UpdateChecker.tsx:18 (UI maintainer); information-level broader-locale prose and the two upstream MIT source-text gaps (UI/distribution maintainers). No unrelated source/test/substantive documentation changes are authorized after this verdict without re-review. The closing-report recorder will save the actual verdict; root verifies its saved content before publication.
