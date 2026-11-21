@@ -6,9 +6,9 @@
   "host": "codex",
   "plan_path": "docs/guildhall/plans/2026-11-21-robey-voice-windows.md",
   "status": "active",
-  "note": "",
+  "note": "Source prepared on main; starting native Windows packaging",
   "started_at": 1795275063.892069,
-  "updated_at": 1795275064.62898,
+  "updated_at": 1795276780.330942,
   "milestones": [
     {
       "id": "plan",
@@ -27,40 +27,42 @@
       "id": "tests",
       "name": "Tests",
       "goal": "Freeze independent regression coverage",
-      "state": "current",
+      "state": "done",
       "loop": null,
       "pass": 1,
       "started_at": 1795275064.62898,
-      "finished_at": null,
+      "finished_at": 1795275501.558673,
       "added_because": null,
-      "skipped_why": null
+      "skipped_why": null,
+      "completed": true
     },
     {
       "id": "build",
       "name": "Build",
       "goal": "Build the branded Windows companion",
-      "state": "upcoming",
+      "state": "done",
       "loop": {
         "reason": "one combined implementation retry",
         "limit": 2
       },
-      "pass": 0,
-      "started_at": null,
-      "finished_at": null,
+      "pass": 1,
+      "started_at": 1795275501.713521,
+      "finished_at": 1795276780.278665,
       "added_because": null,
-      "skipped_why": null
+      "skipped_why": null,
+      "completed": true
     },
     {
       "id": "package",
       "name": "Package",
       "goal": "Produce and audit the native Windows installer",
-      "state": "upcoming",
+      "state": "current",
       "loop": {
         "reason": "one packaging correction",
         "limit": 2
       },
-      "pass": 0,
-      "started_at": null,
+      "pass": 1,
+      "started_at": 1795276780.278665,
       "finished_at": null,
       "added_because": null,
       "skipped_why": null
@@ -93,7 +95,30 @@
       "skipped_why": null
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "application",
+      "milestone": "build",
+      "pass": 1,
+      "name": "App identity and isolation",
+      "state": "done",
+      "who": "Bruga",
+      "added_because": null,
+      "started_at": 1795275501.97176,
+      "finished_at": 1795276254.075468
+    },
+    {
+      "id": "packaging",
+      "milestone": "build",
+      "pass": 1,
+      "name": "Windows build and payload audit",
+      "state": "done",
+      "who": "Bruga",
+      "added_because": null,
+      "started_at": 1795275502.218517,
+      "finished_at": 1795276780.221687
+    }
+  ],
   "waypoints": [
     {
       "id": "windows-acceptance",
