@@ -2019,13 +2019,13 @@ impl ModelManager {
             let api = ApiBuilder::from_cache(Cache::new(
                 crate::portable::model_cache_dir().to_path_buf(),
             ))
-                // Ignore cached and environment-provided credentials. A stale token
-                // can make otherwise-public downloads fail authentication.
-                .with_token(None)
-                .with_progress(false)
-                .with_max_files(stream_count)
-                .build()
-                .map_err(|e| anyhow::anyhow!("Failed to init Hugging Face API: {}", e))?;
+            // Ignore cached and environment-provided credentials. A stale token
+            // can make otherwise-public downloads fail authentication.
+            .with_token(None)
+            .with_progress(false)
+            .with_max_files(stream_count)
+            .build()
+            .map_err(|e| anyhow::anyhow!("Failed to init Hugging Face API: {}", e))?;
             let repo = api.repo(Repo::with_revision(
                 repo_id.clone(),
                 RepoType::Model,
