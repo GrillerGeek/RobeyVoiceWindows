@@ -1,7 +1,7 @@
 # Robey Voice Windows execution plan
 
 Started: 2026-11-21. Mode: bounded feature implementation, based on Handy v0.10.1.
-Status: specification reviewed; independent tests next.
+Status: independent RED accepted; implementation next.
 
 ## Context and authority
 
@@ -22,6 +22,7 @@ The authoritative plain specification is [robey-voice-windows-spec.md](../../rob
 - A distinct identifier alone is insufficient for isolation: own HF cache roots are required in installed and portable modes, with no prior/shared-cache discovery or deletion.
 - First installer is NSIS .exe, unsigned. No Windows signing procurement or security bypass is authorized. Apple notarization does not establish Windows publisher signing.
 - Native Windows CI will establish packaging and CPU-loader evidence. Interactive microphone, hotkey, paste, offline operation and Angie acceptance are separate human gates.
+- Canonical build configuration is `src-tauri/tauri.conf.json` recursively merged with `src-tauri/tauri.windows.conf.json`; no additional CLI configuration overlay or `TAURI_CONFIG` profile is part of this preview. The dedicated workflow is `.github/workflows/robey-windows.yml`, with installer artifact `robey-voice-windows-x64`.
 
 ## Host capabilities and review surface
 
@@ -48,9 +49,9 @@ Canonical review surface: this repository's Markdown Spec, plan, reports and sou
 - [x] Create dedicated GitHub fork and verify Actions availability.
 - [x] Author plain specification with assumptions, measurable Expectations, edge cases and human gates.
 - [x] Independent pre-plan architecture and specification feasibility review.
-- [ ] Prepare task-local Bun/dependencies; record baseline checks without upgrading lockfiles.
-- [ ] Independent test author receives only Spec expectations/defaults/edges/boundaries and existing test conventions, with no implementation proposals or inherited transcript.
-- [ ] Run new acceptance tests; inspect actual RED classification; freeze accepted test files/hashes.
+- [x] Prepare task-local Bun/dependencies; record baseline checks without upgrading lockfiles.
+- [x] Independent test author receives only Spec expectations/defaults/edges/boundaries and existing test conventions, with no implementation proposals or inherited transcript.
+- [x] Run new acceptance tests; inspect actual RED classification; freeze accepted test files/hashes.
 - [ ] Implement minimal identity, branding, local defaults, cache isolation and update enforcement; preserve frozen tests.
 - [ ] Add a native Windows x64 build/audit workflow without inherited signing/publication dependencies.
 - [ ] Verify GREEN, frontend build/lint/format/translations and applicable Rust checks; one implementer retry for the combined gate.
@@ -88,6 +89,11 @@ No speech-engine rewrite, subscription service, account backend, store/winget su
 - Architecture reviewer disclosed incidental inline-test matches from an early production-file search; excluded from its analysis. Independent test author will receive a fresh context without these results. No strict enforced test-read isolation is claimed.
 - Windows artifact, signing, first-run, live dictation, offline behavior and side-by-side installation remain unverified at plan initialization.
 - Required runtime/VAD/model/dependency rights and provenance must be recorded for actual shipped bytes; application MIT does not imply all dependencies/models are MIT.
+- Task-local bootstrap installed official Bun 1.4.5 under ignored `.robey-local/` and preserved frozen dependency locks. Baseline frontend build, lint, translation/catalog/language checks, three existing frontend unit suites and baseline-file Prettier passed. Existing build has a >500 kB chunk warning. Mac Rust formatting is unavailable because rustfmt is absent; native Windows CI must supply it. Existing Playwright smoke tests reached the server but Chromium was absent; task-local browser provisioning is underway.
+- Existing UI tests contain only HTML/server smoke checks, not a Tauri mock fixture. Independent tests will distinguish distributable configuration assertions from actual backend enforcement and native behavior; no mocked passing result will substitute for those gates.
+- Root independently ran `node --test tests/robey-voice-config.test.mjs`: exit 1, five assertion failures (identity/version/updater artifacts/feed/sign command) and one passing full-MIT assertion. Root independently ran the task-local browser test: exit 1, one assertion failure (observed title `handy`, expected Robey Voice). These are semantic RED, not launcher errors. Baseline browser smoke tests passed 2/2 after task-local browser provisioning.
+- Pre-freeze test review removed an invented declarative-window requirement: the Spec permits either declarative or programmatic window creation. This correction removed a constraint beyond the Spec; no assertion was relaxed to fit an implementation. Final tests were formatted, rerun, and hashed before implementation.
+- Frozen files: `tests/robey-voice-config.test.mjs` SHA256 `aee2062cf31608b7409bfda3dd763d5add50921b02417c9d9785b72a3740b19a`; `tests/robey-voice.spec.ts` SHA256 `4230b760b213173e2674ad8154b635fdc2e7a6d67d25e9aa378e533231cfeb17`; coverage map SHA256 `6aceffab4bca05771d4c9c9581fd3503ac8ad065883b1ecdfa95988f02212c16`. Existing tests remain unchanged. Native policy/data isolation remain explicit source/native review obligations.
 
 ## Lessons and interruptions
 
