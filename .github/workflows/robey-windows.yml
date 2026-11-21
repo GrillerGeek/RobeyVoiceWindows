@@ -1,4 +1,5 @@
 name: Robey Voice Windows preview
+run-name: Windows preview at ${{ github.sha }}
 
 # Native artifacts are built only from an explicitly selected repository ref.
 # No PR-supplied inputs, signing credentials, release uploads, or config overrides.
