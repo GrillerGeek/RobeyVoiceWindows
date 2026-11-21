@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import {
   CHINESE_SCRIPTS,
-  suggestedLanguages,
   suggestedScript,
   type ChineseScriptChoice,
 } from "@/lib/utils/languageSuggestions";
@@ -57,11 +56,11 @@ interface OnboardingState extends Persisted {
   reset: (preview: boolean) => void;
 }
 
-const STORAGE_KEY = "handy.onboarding";
+const STORAGE_KEY = "robeyvoice.onboarding";
 
 const fresh = (): Persisted => ({
   step: "welcome",
-  languages: suggestedLanguages(),
+  languages: ["en"],
   script: suggestedScript(),
   modelId: null,
   extraModelId: null,
@@ -69,7 +68,7 @@ const fresh = (): Persisted => ({
   welcomeBack: false,
   lessons: { hold: false, tap: false },
   returnTo: null,
-  atLogin: true,
+  atLogin: false,
 });
 
 const isStringList = (v: unknown): v is string[] =>

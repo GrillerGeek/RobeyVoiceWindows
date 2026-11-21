@@ -22,7 +22,7 @@ export const AboutSettings: React.FC = () => {
         setVersion(appVersion);
       } catch (error) {
         console.error("Failed to get app version:", error);
-        setVersion("0.1.2");
+        setVersion("0.1.0");
       }
     };
 
@@ -48,7 +48,9 @@ export const AboutSettings: React.FC = () => {
           grouped={true}
         >
           {/* eslint-disable-next-line i18next/no-literal-string */}
-          <span className="text-sm font-mono">v{version}</span>
+          <span className="text-sm font-mono">
+            {t("robeyVoice.name")} v{version}
+          </span>
         </SettingContainer>
 
         <ShowWhatsNewOnUpdate descriptionMode="tooltip" grouped={true} />
@@ -71,7 +73,9 @@ export const AboutSettings: React.FC = () => {
           <Button
             variant="secondary"
             size="md"
-            onClick={() => openUrl("https://github.com/cjpais/Handy")}
+            onClick={() =>
+              openUrl("https://github.com/GrillerGeek/RobeyVoiceWindows")
+            }
           >
             {t("settings.about.sourceCode.button")}
           </Button>
@@ -82,6 +86,22 @@ export const AboutSettings: React.FC = () => {
       </SettingsGroup>
 
       <SettingsGroup title={t("settings.about.acknowledgments.title")}>
+        <SettingContainer
+          title={t("robeyVoice.upstream")}
+          description={t("robeyVoice.attribution")}
+          grouped={true}
+          layout="stacked"
+        >
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() =>
+              openUrl("https://github.com/cjpais/Handy/blob/v0.10.1/LICENSE")
+            }
+          >
+            {t("robeyVoice.upstream")}
+          </Button>
+        </SettingContainer>
         <SettingContainer
           title={t("settings.about.acknowledgments.ggml.title")}
           description={t("settings.about.acknowledgments.ggml.description")}

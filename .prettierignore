@@ -19,3 +19,10 @@ src-tauri/src/catalog/catalog.json
 # Misc
 .DS_Store
 *.log
+
+# Local verification runtime and generated helper lock
+.robey-local/
+bun.lockb
+robey-artifact/
+robey-evidence/
+docs/guildhall/plans/**/progress.json.lock

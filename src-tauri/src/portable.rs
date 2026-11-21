@@ -9,14 +9,11 @@ use std::sync::OnceLock;
 use tauri::Manager;
 
 static PORTABLE_DATA_DIR: OnceLock<Option<PathBuf>> = OnceLock::new();
-static PREVIOUS_HF_HOME: OnceLock<Option<PathBuf>> = OnceLock::new();
+static MODEL_CACHE_DIR: OnceLock<PathBuf> = OnceLock::new();
 
 /// Detect portable mode by looking for a `portable` marker file next to the exe.
 /// Must be called once at startup before Tauri initializes.
 pub fn init() {
-    let previous_hf_home = std::env::var_os("HF_HOME").map(PathBuf::from);
-    let _ = PREVIOUS_HF_HOME.set(previous_hf_home);
-
     PORTABLE_DATA_DIR.get_or_init(|| {
         let exe_path = std::env::current_exe().ok()?;
         let exe_dir = exe_path.parent()?;
@@ -52,15 +49,24 @@ pub fn init() {
     });
 }
 
-/// Return the Hugging Face home configured before portable mode redirected it.
-///
-/// Portable releases before v0.9.6 downloaded models to this location (or to
-/// hf-hub's default cache when it is `None`). Keeping it lets the model manager
-/// recognize those downloads after an upgrade without copying multi-gigabyte
-/// files. New downloads never go here, but deleting a model removes its copies
-/// here too, even though the cache may be shared with other applications.
-pub fn previous_hf_home() -> Option<&'static PathBuf> {
-    PREVIOUS_HF_HOME.get().and_then(|path| path.as_ref())
+/// Pin installed and portable model caches to this application's own data root.
+/// Never discover, migrate, or delete a previous/shared Hugging Face cache.
+pub fn init_model_cache(app: &tauri::AppHandle) -> Result<(), tauri::Error> {
+    let home = hugging_face_home(&app_data_dir(app)?);
+    let hub = home.join("hub");
+    std::env::set_var("HF_HOME", &home);
+    std::env::set_var("HF_HUB_CACHE", &hub);
+    std::env::set_var("HUGGINGFACE_HUB_CACHE", &hub);
+    let _ = MODEL_CACHE_DIR.set(hub);
+    Ok(())
+}
+
+/// Startup initializes this before creating a model manager; no shared fallback.
+pub fn model_cache_dir() -> &'static Path {
+    MODEL_CACHE_DIR
+        .get()
+        .expect("Robey Voice model cache must be initialized before model discovery")
+        .as_path()
 }
 
 /// Keep hf-hub downloads inside the portable data directory. hf-hub appends

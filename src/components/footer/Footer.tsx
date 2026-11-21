@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 
 import ModelSelector from "../model-selector";
@@ -11,6 +12,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onShowHistory }) => {
+  const { t } = useTranslation();
   const [version, setVersion] = useState("");
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({ onShowHistory }) => {
         setVersion(appVersion);
       } catch (error) {
         console.error("Failed to get app version:", error);
-        setVersion("0.1.2");
+        setVersion("0.1.0");
       }
     };
 
@@ -41,7 +43,9 @@ const Footer: React.FC<FooterProps> = ({ onShowHistory }) => {
             <UpdateChecker />
             <span>•</span>
             {/* eslint-disable-next-line i18next/no-literal-string */}
-            <span>v{version}</span>
+            <span>
+              {t("robeyVoice.name")} v{version}
+            </span>
           </div>
           <NoticeChip />
         </div>

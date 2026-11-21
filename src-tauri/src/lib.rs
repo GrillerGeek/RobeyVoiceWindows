@@ -936,7 +936,6 @@ pub fn run(cli_args: CliArgs) {
     let mut app = builder
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_os::init())
         .plugin(system_languages::init())
         .plugin(tauri_plugin_clipboard_manager::init())
@@ -951,6 +950,8 @@ pub fn run(cli_args: CliArgs) {
         .manage(cli_args.clone())
         .manage(notices::NoticeStore::default())
         .setup(move |app| {
+            // Establish our private cache before either GUI or headless model discovery.
+            portable::init_model_cache(app.handle())?;
             #[cfg(target_os = "windows")]
             log::info!(
                 "Vulkan layer policy: VK_LOADER_LAYERS_DISABLE={:?}, HANDY_KEEP_VULKAN_IMPLICIT_LAYERS={}",
@@ -1016,18 +1017,17 @@ pub fn run(cli_args: CliArgs) {
 
             // Create main window programmatically so we can set data_directory
             // for portable mode (redirects WebView2 cache to portable Data dir)
-            let mut win_builder =
+            let win_builder =
                 tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("/".into()))
-                    .title("Handy")
+                    .title("Robey Voice")
                     .inner_size(utils::MAIN_WINDOW_SIZE.0, utils::MAIN_WINDOW_SIZE.1)
                     .min_inner_size(utils::MAIN_WINDOW_SIZE.0, utils::MAIN_WINDOW_SIZE.1)
                     .resizable(true)
                     .maximizable(true)
                     .visible(false);
 
-            if let Some(data_dir) = portable::data_dir() {
-                win_builder = win_builder.data_directory(data_dir.join("webview"));
-            }
+            let win_builder = win_builder
+                .data_directory(portable::app_data_dir(app.handle())?.join("webview"));
 
             // Only used on macOS (to size it) and Windows (to disable WebView2
             // browser accelerators).

@@ -312,23 +312,9 @@ pub struct DownloadProgress {
     pub bytes_per_sec: Option<f64>,
 }
 
-/// Return the active HF cache followed by the pre-v0.9.6 cache for portable
-/// upgrades. Downloads still use `Cache::from_env()` and therefore only write
-/// to the active portable cache.
+/// Only Robey Voice's private cache is eligible for discovery or deletion.
 fn hf_caches() -> Vec<Cache> {
-    let current = Cache::from_env();
-    let mut caches = vec![current.clone()];
-
-    if crate::portable::is_portable() {
-        let legacy = crate::portable::previous_hf_home()
-            .map(|home| Cache::new(home.join("hub")))
-            .unwrap_or_default();
-        if legacy.path() != current.path() {
-            caches.push(legacy);
-        }
-    }
-
-    caches
+    vec![Cache::new(crate::portable::model_cache_dir().to_path_buf())]
 }
 
 fn hf_cached_path(repo_id: &str, revision: &str, filename: &str) -> Option<PathBuf> {
@@ -2030,7 +2016,9 @@ impl ModelManager {
 
             // Fresh client per attempt so a wedged connection from the previous
             // try can't poison the retry.
-            let api = ApiBuilder::from_env()
+            let api = ApiBuilder::from_cache(Cache::new(
+                crate::portable::model_cache_dir().to_path_buf(),
+            ))
                 // Ignore cached and environment-provided credentials. A stale token
                 // can make otherwise-public downloads fail authentication.
                 .with_token(None)

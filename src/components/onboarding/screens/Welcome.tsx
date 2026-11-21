@@ -99,9 +99,12 @@ export const Welcome: React.FC<WelcomeProps> = ({ progress, onContinue }) => {
         </div>
         <ScreenHeader
           title={t("onboarding.welcome.title")}
-          sub={t("onboarding.welcome.subtitle")}
+          sub={t("robeyVoice.localSetup")}
         />
 
+        <p className="my-2 text-small text-ink-2">
+          {t("robeyVoice.historyPrivacy")}
+        </p>
         <div className="mt-lead flex min-h-0 w-full flex-1 flex-col overflow-hidden rounded-panel border-[1.5px] border-line-strong bg-background">
           <LanguageSearchField
             picker={picker}

@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { locale } from "@tauri-apps/plugin-os";
 import { LANGUAGE_METADATA } from "./languages";
 import { commands } from "@/bindings";
 import {
@@ -109,12 +108,7 @@ export const syncLanguageFromSettings = async () => {
         await i18n.changeLanguage(supported);
       }
     } else {
-      // Fall back to system locale detection if no saved preference
-      const systemLocale = await locale();
-      const supported = getSupportedLanguage(systemLocale);
-      if (supported && supported !== i18n.language) {
-        await i18n.changeLanguage(supported);
-      }
+      await i18n.changeLanguage("en");
     }
   } catch (e) {
     console.warn("Failed to sync language from settings:", e);

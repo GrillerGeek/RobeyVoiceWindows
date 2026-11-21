@@ -605,11 +605,11 @@ fn default_autostart_enabled() -> bool {
 }
 
 fn default_update_checks_enabled() -> bool {
-    true
+    false
 }
 
 fn default_show_whats_new_on_update() -> bool {
-    true
+    false
 }
 
 fn default_whats_new_last_seen_version() -> String {
@@ -617,7 +617,7 @@ fn default_whats_new_last_seen_version() -> String {
 }
 
 fn default_selected_language() -> String {
-    "auto".to_string()
+    "en".to_string()
 }
 
 fn default_overlay_position() -> OverlayPosition {
@@ -715,9 +715,7 @@ fn default_post_process_enabled() -> bool {
 }
 
 fn default_app_language() -> String {
-    tauri_plugin_os::locale()
-        .map(|l| l.replace('_', "-"))
-        .unwrap_or_else(|| "en".to_string())
+    "en".to_string()
 }
 
 fn default_show_tray_icon() -> bool {
@@ -1030,7 +1028,7 @@ pub fn get_default_settings() -> AppSettings {
         clamshell_microphone: None,
         selected_output_device: None,
         translate_to_english: false,
-        selected_language: "auto".to_string(),
+        selected_language: default_selected_language(),
         overlay_position: default_overlay_position(),
         debug_mode: false,
         log_level: default_log_level(),
@@ -1469,11 +1467,17 @@ fn self_update_possible() -> bool {
 /// `HANDY_DISABLE_UPDATER` is set — e.g. by the Nix package, since self-update
 /// can't work against an immutable /nix/store install — or when this build
 /// cannot install its own update (see `linux_self_update_possible`).
+// Fork policy is structural: saved opt-in and environment overrides cannot enable it.
+const ROBEY_VOICE_MANUAL_UPDATES_ONLY: bool = true;
+
 pub fn update_checks_forced_disabled() -> bool {
     use std::sync::OnceLock;
     static IS_UPDATER_DISABLED: OnceLock<bool> = OnceLock::new();
-    *IS_UPDATER_DISABLED
-        .get_or_init(|| utils::env_flag_enabled("HANDY_DISABLE_UPDATER") || !self_update_possible())
+    *IS_UPDATER_DISABLED.get_or_init(|| {
+        ROBEY_VOICE_MANUAL_UPDATES_ONLY
+            || utils::env_flag_enabled("HANDY_DISABLE_UPDATER")
+            || !self_update_possible()
+    })
 }
 
 /// Effective updater state: the user's stored preference, overridden to `false`

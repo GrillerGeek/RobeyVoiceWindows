@@ -1,5 +1,5 @@
 import React from "react";
-import HandyMascot from "../icons/HandyMascot";
+import brand from "../../assets/robey-voice.svg";
 
 interface MascotProps {
   /** Height in px. */
@@ -17,6 +17,10 @@ export const Mascot: React.FC<MascotProps> = ({ size, animation = null }) => (
     style={{ width: size * BOX_ASPECT, height: size }}
     className={`relative block origin-[50%_90%] rotate-[-8deg] select-none ${animation === "wave" ? "animate-wave" : animation === "slap" ? "animate-slap" : ""}`}
   >
-    <HandyMascot className="absolute start-[12.6%] top-[7.25%] h-[85.25%] w-auto" />
+    <img
+      src={brand}
+      alt=""
+      className="absolute start-[2%] top-[7.25%] h-[85.25%] w-auto"
+    />
   </span>
 );
