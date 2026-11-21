@@ -68,7 +68,7 @@ jobs:
             & bun @arguments
             if ($LASTEXITCODE -ne 0) { throw "bun $arguments failed" }
           }
-          node --test tests/robey-voice-config.test.mjs
+          node --test tests/robey-voice-config.test.mjs tests/robey-isolation.test.mjs
           if ($LASTEXITCODE -ne 0) { throw "Frozen configuration contracts failed" }
           bun src/components/update-checker/portableInstaller.test.ts
           if ($LASTEXITCODE -ne 0) { throw "Inherited portable installer regressions failed" }

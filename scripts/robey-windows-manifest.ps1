@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $audit = Get-Content robey-evidence/package-audit.json -Raw | ConvertFrom-Json
-if (-not $audit.audited -or -not $audit.cpuEnumerated) { throw 'Successful native package audit required before artifact assembly' }
+if (-not $audit.audited -or -not $audit.cpuEnumerated -or $audit.packagedExecutable -ne 'robey-voice.exe' -or $audit.packagedProcessName -ne 'robey-voice' -or $audit.upstreamHandyExecutablePresent) { throw 'Successful isolated Robey Voice native package audit required before artifact assembly' }
 $source = (& git rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0 -or $source -ne $env:GITHUB_SHA) { throw 'Checked-out source does not match workflow source commit' }
 $package = Join-Path 'src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis' $audit.installer
@@ -15,6 +15,10 @@ Copy-Item src-tauri/resources/licenses robey-artifact/licenses -Recurse
 $facts = @{
     product = 'Robey Voice'
     version = '0.1.0'
+    packagedExecutable = 'robey-voice.exe'
+    packagedProcessName = 'robey-voice'
+    internalCargoBinary = 'handy'
+    internalLibrary = 'handy_app_lib'
     previewPlatform = 'Windows 11 x64; native MSVC build on Windows Server 2022 hosted runner'
     sourceRepository = 'https://github.com/GrillerGeek/RobeyVoiceWindows'
     sourceCommit = $source

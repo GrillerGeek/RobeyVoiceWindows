@@ -33,7 +33,7 @@ jobs:
           bun run check:model-languages
           bun run check:catalog
           bun run test:keyboard
-          node --test tests/robey-voice-config.test.mjs
+          node --test tests/robey-voice-config.test.mjs tests/robey-isolation.test.mjs
           bun src/components/update-checker/portableInstaller.test.ts
           bun src/components/settings/history/clipboard.test.ts
           bun scripts/robey-license-inventory.mjs --frontend-only

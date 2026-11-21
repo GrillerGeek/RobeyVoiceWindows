@@ -35,7 +35,7 @@ try {
     if ((Get-Item $model).Length -ne 77704715 -or (Get-FileHash $model).Hash.ToLowerInvariant() -ne $expected) { throw 'Pinned synthetic-probe model size/hash mismatch' }
     $stdout = Join-Path $Evidence 'file-transcription.stdout.json'
     $stderr = Join-Path $Evidence 'file-transcription.stderr.txt'
-    $binary = Join-Path $Install 'handy.exe'
+    $binary = Join-Path $Install 'robey-voice.exe'
     # Quote the generated WAV path for native Windows argv parsing.
     $arguments = "--transcribe-file `"$wav`" --model robey-ci-whisper-tiny-en --device-index $CpuIndex --json"
     $process = Start-Process -FilePath $binary -ArgumentList $arguments -WorkingDirectory $Install -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru

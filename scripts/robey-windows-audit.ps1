@@ -12,8 +12,8 @@ foreach ($pattern in @('*transcribe*.dll', '*ggml-cpu*.dll', '*ggml-vulkan*.dll'
     if (-not ($staged | Where-Object { $_.Name -like $pattern })) { throw "Required staged runtime missing: $pattern" }
 }
 
-$work = Join-Path $env:RUNNER_TEMP ("robey-package-audit-" + [guid]::NewGuid().ToString('N'))
-$install = Join-Path $work 'install'
+$work = Join-Path $env:RUNNER_TEMP ("Robey package audit " + [guid]::NewGuid().ToString('N'))
+$install = Join-Path $work 'Robey Voice install'
 New-Item -ItemType Directory -Path $install -Force | Out-Null
 $oldPath = $env:PATH
 $oldAppData = $env:APPDATA
@@ -22,10 +22,13 @@ try {
     # The inherited portable installer performs a temporary, normal-user install.
     # It creates no installed-app registry entries or shortcuts and never launches
     # an interactive recording session. Windows protections remain in force.
+    # NSIS /D consumes the remaining command line, including spaces, and must
+    # remain the last argument without surrounding quotes.
     $process = Start-Process -FilePath $package.FullName -ArgumentList @('/S', '/PORTABLE', "/D=$install") -Wait -PassThru
     if ($process.ExitCode -ne 0) { throw "Portable NSIS install exited $($process.ExitCode)" }
-    $binary = Join-Path $install 'handy.exe'
-    if (-not (Test-Path $binary -PathType Leaf)) { throw 'Installer omitted root handy.exe' }
+    $binary = Join-Path $install 'robey-voice.exe'
+    if (-not (Test-Path $binary -PathType Leaf)) { throw 'Installer omitted root robey-voice.exe' }
+    if (Get-ChildItem $install -File -Recurse -Filter 'handy.exe') { throw 'Installer contains upstream handy.exe process identity' }
     if (-not (Test-Path (Join-Path $install 'portable'))) { throw 'Temporary portable marker is absent' }
     if ((Get-AuthenticodeSignature $binary).Status -ne 'NotSigned') { throw 'Unexpected application signing state' }
     $metadata = (Get-Item $binary).VersionInfo
@@ -34,7 +37,7 @@ try {
     }
     foreach ($dll in $staged) {
         $installed = Join-Path $install $dll.Name
-        if (-not (Test-Path $installed -PathType Leaf)) { throw "Runtime is not co-located with handy.exe: $($dll.Name)" }
+        if (-not (Test-Path $installed -PathType Leaf)) { throw "Runtime is not co-located with robey-voice.exe: $($dll.Name)" }
         if ((Get-FileHash $installed).Hash -ne (Get-FileHash $dll.FullName).Hash) { throw "Packaged runtime differs from staging: $($dll.Name)" }
     }
     $vad = Join-Path $install 'resources/models/silero-vad-v6.2-F32.gguf'
@@ -79,6 +82,12 @@ try {
         installerSigned = $false
         productName = $metadata.ProductName
         productVersion = $metadata.ProductVersion
+        packagedExecutable = [IO.Path]::GetFileName($binary)
+        packagedProcessName = [IO.Path]::GetFileNameWithoutExtension($binary)
+        upstreamHandyExecutablePresent = $false
+        executableMetadata = @{ originalFilename = $metadata.OriginalFilename; internalName = $metadata.InternalName }
+        installationPathContainsSpaces = $install.Contains(' ')
+        webView2Bootstrap = 'Bootstrapper path quoting is source-audited; a successful install does not establish bootstrapper execution when WebView2 is already present.'
         cpuEnumerated = $true
         vulkanDeviceEnumerated = $hasVulkanDevice
         gpuNote = if ($hasVulkanDevice) { 'Vulkan device enumerated; GPU dictation unverified' } else { 'No usable Vulkan device enumerated on this runner; CPU available' }
