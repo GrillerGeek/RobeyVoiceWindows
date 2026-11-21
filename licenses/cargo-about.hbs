@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>Robey Voice Rust dependency notices</title>
+  <style>body { font-family: sans-serif; max-width: 75rem; margin: 2rem auto; padding: 1rem; } pre { white-space: pre-wrap; }</style>
+  <h1>Robey Voice Rust dependency notices</h1>
+  <p>Generated from the locked Windows x64 dependency graph. Build dependencies are conservatively included. Native vendored code and other resources have additional notices beside this file. This inventory does not license the entire application bundle under MIT.</p>
+  {{#each licenses}}
+  <section>
+    <h2>{{name}}</h2>
+    <ul>
+      {{#each used_by}}
+      <li><a href="{{#if crate.repository}}{{crate.repository}}{{else}}https://crates.io/crates/{{crate.name}}{{/if}}">{{crate.name}} {{crate.version}}</a></li>
+      {{/each}}
+    </ul>
+    <pre>{{text}}</pre>
+  </section>
+  {{/each}}
+</html>

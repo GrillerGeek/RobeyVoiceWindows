@@ -24,6 +24,7 @@
     }
   },
   "bundle": {
+    "publisher": "Jason Robey",
     "active": true,
     "createUpdaterArtifacts": false,
     "targets": ["nsis"],

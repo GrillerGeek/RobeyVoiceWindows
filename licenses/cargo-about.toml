@@ -1,0 +1,17 @@
+# This selects license texts for the locked Windows graph, not a blanket
+# relicensing of dependencies. Build dependencies remain conservatively listed.
+accepted = [
+  "MIT", "Apache-2.0", "BSD-3-Clause", "BSD-2-Clause", "ISC", "Zlib",
+  "Unicode-3.0", "BSL-1.0", "MPL-2.0", "CDLA-Permissive-2.0",
+]
+targets = ["x86_64-pc-windows-msvc"]
+ignore-build-dependencies = false
+ignore-dev-dependencies = true
+ignore-transitive-dependencies = false
+no-clearly-defined = true
+workarounds = ["ring", "rustls", "chrono", "clap"]
+
+# cargo-about's pinned ring workaround reproduces its combined ISC/OpenSSL/MIT
+# source license. This exception is specific to the already locked ring crate.
+[ring]
+accepted = ["OpenSSL"]

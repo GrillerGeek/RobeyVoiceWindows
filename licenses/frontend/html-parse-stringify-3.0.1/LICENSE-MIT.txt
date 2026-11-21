@@ -1,0 +1,30 @@
+html-parse-stringify 3.0.1: upstream package declares MIT.
+The published package and inspected exact gitHead source do not supply a full
+license file or copyright notice. The standard MIT permission and disclaimer
+text below is reproduced from Handy's identical MIT terms without substituting
+a copyright owner or inventing a missing copyright notice.
+Upstream gitHead: ce46022f537ef9b050fac592f9fcc30bf838e5ba
+Upstream repository: git+https://github.com/henrikjoreteg/html-parse-stringify.git
+Published package integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==
+Author metadata: {"name": "Henrik Joreteg", "email": "henrik@joreteg.com"}
+This source-text gap remains explicitly recorded for distributor review.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

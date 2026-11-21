@@ -1,0 +1,35 @@
+{
+  "name": "@handy-computer/models",
+  "version": "0.2.3",
+  "license": "MIT",
+  "repository": {
+    "url": "git+https://github.com/handy-computer/models.git",
+    "type": "git",
+    "directory": "packages/models"
+  },
+  "gitHead": "2d77f8810ee9539a90328a4c59b420326b225d39",
+  "author": null,
+  "dist": {
+    "shasum": "04f3167265a8d0b837fcc850c56278bad09bfe24",
+    "tarball": "https://registry.npmjs.org/@handy-computer/models/-/models-0.2.3.tgz",
+    "fileCount": 17,
+    "integrity": "sha512-EcyPojMY8hG5adDZGR/2h/m9jniqAnSND00gmiAErRLB1BQqMD9jrJaqsfoYF/UfPC8ocKZFUNSkTegoYqjF5w==",
+    "signatures": [
+      {
+        "sig": "MEYCIQCuP6+8GYYAj8HrfbKUCZEjE8xHPwBMX1xxLLaKJnDtCQIhAMQiCs3D3Eb7vFI32MOnf3eeM3vLZjEaKto7fRX/fXHt",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEYCIQC4Y4ouvTijyfKteKtOCh2nqsT+VuLT6SijNbKSBwjQjAIhAPip9Mxz09e7Tplkzi2El9mJWFq8joxiK1TrY+M/3FJx",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/@handy-computer%2fmodels@0.2.3",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 242898
+  }
+}

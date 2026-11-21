@@ -1,0 +1,130 @@
+name: Robey Voice Windows preview
+
+# Native artifacts are built only from an explicitly selected repository ref.
+# No PR-supplied inputs, signing credentials, release uploads, or config overrides.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: robey-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-x64:
+    if: github.repository == 'GrillerGeek/RobeyVoiceWindows'
+    runs-on: windows-2022
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CARGO_TERM_COLOR: never
+      RUST_BACKTRACE: "0"
+      CMAKE_GENERATOR: Visual Studio 17 2022
+      CMAKE_GENERATOR_PLATFORM: x64
+    steps:
+      - name: Checkout selected source
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Set up frozen Bun tool version
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.5
+
+      - name: Install stable Rust and validation components
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw "Rust setup failed" }
+          rustup default stable
+          if ($LASTEXITCODE -ne 0) { throw "Rust toolchain selection failed" }
+
+      - name: Install Vulkan SDK for the inherited dynamic backend
+        uses: humbletim/install-vulkan-sdk@30ba978f977e81b72d091fc8888feb1fb26f9aff # v1.2
+        with:
+          version: 1.4.309.0
+          cache: false
+
+      - name: Verify native prerequisites and locate app-local runtime
+        run: ./scripts/robey-windows-setup.ps1
+
+      - name: Install exact locked frontend dependencies
+        run: |
+          bun install --frozen-lockfile
+          if ($LASTEXITCODE -ne 0) { throw "Frozen dependency install failed" }
+
+      - name: Frontend and configuration checks
+        run: |
+          $commands = @(
+            @('run', 'build'), @('run', 'lint'), @('run', 'check:translations'),
+            @('run', 'check:model-languages'), @('run', 'check:catalog'),
+            @('run', 'test:keyboard')
+          )
+          foreach ($arguments in $commands) {
+            & bun @arguments
+            if ($LASTEXITCODE -ne 0) { throw "bun $arguments failed" }
+          }
+          node --test tests/robey-voice-config.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw "Frozen configuration contracts failed" }
+          bun src/components/update-checker/portableInstaller.test.ts
+          if ($LASTEXITCODE -ne 0) { throw "Inherited portable installer regressions failed" }
+          bun src/components/settings/history/clipboard.test.ts
+          if ($LASTEXITCODE -ne 0) { throw "Inherited history clipboard regressions failed" }
+          # Explicit tracked source paths exclude runtime profiles and generated captures.
+          $paths = git ls-files -- src scripts tests .github '*.json' '*.md' '*.ts' '*.js' '*.mjs' '*.yml' '*.yaml'
+          $paths = @($paths | Where-Object {
+            $_ -notmatch '(^docs/|^src/bindings\.ts$|^src-tauri/src/catalog/catalog\.json$)' -and
+            $_ -match '\.(tsx?|jsx?|mjs|json|ya?ml|css|html)$'
+          })
+          & bun x --no-install prettier --check --ignore-unknown @paths
+          if ($LASTEXITCODE -ne 0) { throw "Tracked source formatting failed" }
+
+      - name: Rust checks against frozen resolution
+        run: |
+          cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
+          if ($LASTEXITCODE -ne 0) { throw "Rust formatting failed" }
+          cargo test --locked --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-msvc --lib
+          if ($LASTEXITCODE -ne 0) { throw "Rust tests failed" }
+          cargo clippy --locked --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-msvc --all-targets
+          if ($LASTEXITCODE -ne 0) { throw "Rust clippy failed" }
+
+      - name: Generate complete package license inventories
+        run: |
+          cargo install cargo-about --version 0.8.2 --locked
+          if ($LASTEXITCODE -ne 0) { throw "Pinned license generator setup failed" }
+          cargo about generate --locked --fail --manifest-path src-tauri/Cargo.toml --config licenses/cargo-about.toml --output-file src-tauri/resources/licenses/RUST-DEPENDENCIES.html licenses/cargo-about.hbs
+          if ($LASTEXITCODE -ne 0) { throw "Rust dependency license audit failed" }
+          bun scripts/robey-license-inventory.mjs
+          if ($LASTEXITCODE -ne 0) { throw "Frontend/native dependency license audit failed" }
+
+      - name: Build unsigned NSIS using normal common and Windows configuration
+        run: |
+          bun run tauri build --target x86_64-pc-windows-msvc --bundles nsis -- --locked
+          if ($LASTEXITCODE -ne 0) { throw "Native NSIS build failed" }
+
+      - name: Audit actual installed installer payload and compute devices
+        run: ./scripts/robey-windows-audit.ps1
+
+      - name: Record factual provenance and checksums
+        run: ./scripts/robey-windows-manifest.ps1
+
+      - name: Upload audited installer and evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robey-voice-windows-x64
+          path: robey-artifact/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retain bounded package diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robey-windows-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: robey-evidence/
+          if-no-files-found: ignore
+          retention-days: 7

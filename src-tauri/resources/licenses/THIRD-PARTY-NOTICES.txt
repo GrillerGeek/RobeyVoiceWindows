@@ -1,0 +1,77 @@
+Robey Voice 0.1.0 Windows preview - attribution and notices
+
+Robey Voice is based on Handy v0.10.1, source commit
+aca8985190c3ad7f361d8a80cb30f179513ed690.
+Upstream: https://github.com/cjpais/Handy
+Fork: https://github.com/GrillerGeek/RobeyVoiceWindows
+Handy's complete MIT license and Copyright (c) 2025 CJ Pais are preserved in
+HANDY-MIT.txt. The bundle contains components under other terms; it is not
+exclusively MIT licensed.
+
+Original Robey Voice microphone/wave icon artwork and derived PNG/ICO files:
+Copyright Jason Robey. SPDX-License-Identifier: GPL-3.0-only.
+The original SVG is shipped as resources/brand/robey-voice.svg and preserved
+verbatim in the source repository. The owner provided the original art and
+declared its GPL-3.0-only terms. See GPL-3.0-only.txt for the complete license.
+This notice applies to the artwork; Handy code retains its existing MIT terms.
+
+Silero VAD v6.2 F32 GGUF (included, not a transcription weight):
+Copyright (c) 2020-present Silero Team; MIT.
+SHA256: 0d871a800c420fdd5d1b17a3aea4296d1c39608f0ff4a9295eb76457eb1c88e6
+Conversion source: https://huggingface.co/handy-computer/silero-vad-v6.2-gguf
+Model card records Silero source commit 5cd7945, pinned 2026-10-09, and validation
+against Silero 6.2.3 at transcribe.cpp commit 2674b95d on 2026-10-10.
+See SILERO-LICENSE.txt, SILERO-NOTICE.txt, SILERO-MODEL-CARD.md. The resource is
+already tracked; the build verifies its hash and never silently replaces it.
+
+Native transcription: transcribe-cpp/transcribe-cpp-sys and vendored ggml,
+Silero VAD implementation and miniz have their own notices and copyright
+holders. See NATIVE-DEPENDENCIES.txt, generated from the exact locked crate
+sources, and RUST-DEPENDENCIES.html for Rust dependencies and their full texts.
+Other native components, including audio codecs and SQLite, retain their own
+terms; they are not relicensed by Handy. Native source notices are included in
+the generated inventory. SQLite is public domain: https://www.sqlite.org/copyright.html
+
+Frontend production dependencies are listed with versions, original license
+texts and source references in FRONTEND-DEPENDENCIES.txt. The inventory is
+conservative; dependency graph entries can be eliminated by the frontend
+bundler. Dev tooling is not described as shipped frontend code.
+
+The bundled CJK font is a subset of Noto Sans CJK from notofonts/noto-cjk,
+Sans2.004, Sans/Variable/OTF/NotoSansCJKsc-VF.otf. The inherited subset generation
+preserves font copyright and license name records. Original font SHA256:
+2745e9681cb9d8a5c8901b62c9e1bd98c9c774365fc3b84dd467621013b51cd3
+SIL Open Font License 1.1; complete terms in NOTO-OFL.txt.
+Source: https://github.com/notofonts/noto-cjk/tree/Sans2.004
+
+The inherited feedback sounds and remaining inherited tray/status assets
+come from the Handy baseline and remain covered by its distributed MIT grant.
+The fork's original icon source and derivatives have the separate terms above.
+
+Microsoft Visual C++ Redistributable runtime DLLs (msvcp140*, vcruntime140*,
+vcomp140*) are Microsoft proprietary distributable code, not MIT code. They are
+copied from the build runner's licensed Visual Studio x64 CRT/OpenMP redist
+directories, not from debug or system folders. Applicable Microsoft Visual
+Studio terms and distributable-code list:
+https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/
+https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution
+Full source terms and the redistribution list are reproduced in
+MICROSOFT-VS2022-TERMS.txt and MICROSOFT-VS2022-REDISTRIBUTION.txt.
+The app-local DLL inventory and hashes are in the build evidence. Visual Studio
+and Vulkan/SPIRV build tools are not themselves included in the installer.
+
+Microsoft Edge WebView2 Runtime is Microsoft's separately licensed runtime:
+https://developer.microsoft.com/en-us/microsoft-edge/webview2/
+https://www.microsoft.com/en-us/legal/terms-of-use
+The installer may download Microsoft's WebView2 bootstrapper if the runtime is
+missing. It does not redistribute the complete fixed runtime. Its availability
+and installation remain subject to Microsoft's terms and Windows policies.
+
+Transcription model weights are NOT included in the preview installer. The
+model catalog references multiple licenses; they are not all MIT. See
+MODEL-REFERENCES.json for exact catalog IDs, repositories, revisions and declared
+terms. The corresponding model cards/license files govern later user-selected
+downloads. The catalog's recommendation is not a grant to relicense a model.
+
+All generated inventories are build facts from selected locked source files,
+not a legal certification or cryptographically signed provenance attestation.
