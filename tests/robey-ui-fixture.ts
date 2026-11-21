@@ -148,10 +148,19 @@ export async function installSyntheticWindows(
       }, {shouldMockEvents: true});
       await import('/src/main.tsx');
     `;
+    const html = await response.text();
+    const entryScript =
+      /<script\b[^>]*\bsrc=["']\/src\/main\.tsx(?:\?[^"']*)?["'][^>]*>\s*<\/script>/g;
+    const entries = [...html.matchAll(entryScript)];
+    if (entries.length !== 1) {
+      throw new Error(
+        `Synthetic Windows fixture requires exactly one /src/main.tsx entry script (with an optional Vite query); found ${entries.length}. Bootstrap was not injected.`,
+      );
+    }
     await route.fulfill({
       response,
-      body: (await response.text()).replace(
-        '<script type="module" src="/src/main.tsx"></script>',
+      body: html.replace(
+        entryScript,
         `<script type="module">${bootstrap}</script>`,
       ),
     });
