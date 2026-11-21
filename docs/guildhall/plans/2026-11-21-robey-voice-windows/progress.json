@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "title": "Robey Voice Windows",
+  "repo": "GrillerGeek/RobeyVoiceWindows",
+  "branch": "robey/windows-preview",
+  "host": "codex",
+  "plan_path": "docs/guildhall/plans/2026-11-21-robey-voice-windows.md",
+  "status": "active",
+  "note": "",
+  "started_at": 1795275063.892069,
+  "updated_at": 1795275064.62898,
+  "milestones": [
+    {
+      "id": "plan",
+      "name": "Plan",
+      "goal": "Pin and review the bounded Windows specification",
+      "state": "done",
+      "loop": null,
+      "pass": 1,
+      "started_at": 1795275064.0761669,
+      "finished_at": 1795275064.3760068,
+      "added_because": null,
+      "skipped_why": null,
+      "completed": true
+    },
+    {
+      "id": "tests",
+      "name": "Tests",
+      "goal": "Freeze independent regression coverage",
+      "state": "current",
+      "loop": null,
+      "pass": 1,
+      "started_at": 1795275064.62898,
+      "finished_at": null,
+      "added_because": null,
+      "skipped_why": null
+    },
+    {
+      "id": "build",
+      "name": "Build",
+      "goal": "Build the branded Windows companion",
+      "state": "upcoming",
+      "loop": {
+        "reason": "one combined implementation retry",
+        "limit": 2
+      },
+      "pass": 0,
+      "started_at": null,
+      "finished_at": null,
+      "added_because": null,
+      "skipped_why": null
+    },
+    {
+      "id": "package",
+      "name": "Package",
+      "goal": "Produce and audit the native Windows installer",
+      "state": "upcoming",
+      "loop": {
+        "reason": "one packaging correction",
+        "limit": 2
+      },
+      "pass": 0,
+      "started_at": null,
+      "finished_at": null,
+      "added_because": null,
+      "skipped_why": null
+    },
+    {
+      "id": "review",
+      "name": "Review",
+      "goal": "Complete independent technical and delivery reviews",
+      "state": "upcoming",
+      "loop": {
+        "reason": "one review correction round",
+        "limit": 2
+      },
+      "pass": 0,
+      "started_at": null,
+      "finished_at": null,
+      "added_because": null,
+      "skipped_why": null
+    },
+    {
+      "id": "release",
+      "name": "Release",
+      "goal": "Publish a traceable preview installer",
+      "state": "upcoming",
+      "loop": null,
+      "pass": 0,
+      "started_at": null,
+      "finished_at": null,
+      "added_because": null,
+      "skipped_why": null
+    }
+  ],
+  "tasks": [],
+  "waypoints": [
+    {
+      "id": "windows-acceptance",
+      "need": "Verify dictation on Angie's Windows computer",
+      "after": "release",
+      "state": "upcoming",
+      "planned": true,
+      "waiting_since": null,
+      "done_at": null
+    }
+  ],
+  "loops": []
+}
