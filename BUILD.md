@@ -1,266 +1,76 @@
 # Build Instructions
 
-This guide covers how to set up the development environment and build Handy from source across different platforms.
+This guide covers the Robey Voice 0.1.0 Windows x64 preview. Handy v0.10.1 at `aca8985190c3ad7f361d8a80cb30f179513ed690` is the fixed upstream baseline. Keep existing lockfiles authoritative; do not upgrade dependencies incidentally.
 
 ## Prerequisites
 
-### All Platforms
+- Windows x64 build host with Visual Studio 2022 or Build Tools and the x64 MSVC C++ workload, Windows SDK, and licensed x64 CRT/OpenMP redistributable directories.
+- Rust stable, target `x86_64-pc-windows-msvc`, rustfmt and clippy.
+- Bun 1.4.5, CMake on PATH, Vulkan SDK 1.4.309.0 with `glslc`, and vcpkg SPIRV-Headers (`spirv-headers:x64-windows`).
+- Git and internet access for locked dependencies/build tools. Native build dependencies are separate from end-user hardware requirements; a dedicated GPU is not required for the intended CPU flow.
 
-- [Rust](https://rustup.rs/) (latest stable)
-- [Bun](https://bun.sh/) package manager
-- [Tauri Prerequisites](https://tauri.app/start/prerequisites/)
+The canonical native environment is the dedicated Windows Server 2022 GitHub runner. End-user acceptance targets Windows 11 x64 on Intel or AMD; the hosted runner does not prove Windows 11 interactive behavior. macOS/Linux source is inherited, outside this preview's support and validation scope.
 
-### Platform-Specific Requirements
-
-#### macOS
-
-- Xcode Command Line Tools
-- Install with: `xcode-select --install`
-
-#### Windows
-
-- Microsoft C++ Build Tools: Visual Studio 2019/2022 with C++ development
-  tools, or Visual Studio Build Tools 2019/2022
-- [CMake](https://cmake.org/download/) (must be on `PATH`):
-
-  ```powershell
-  winget install Kitware.CMake
-  ```
-
-- [Vulkan SDK](https://vulkan.lunarg.com/sdk/home) from LunarG — required to
-  build the Vulkan GPU backend (`vulkan-shaders-gen` needs the SDK's headers
-  and `glslc`):
-
-  ```powershell
-  winget install KhronosGroup.VulkanSDK
-  ```
-
-  Open a new terminal afterward so `VULKAN_SDK` is set.
-
-> [!NOTE]
-> Windows' 260-character path limit used to break the native Vulkan build in
-> most checkouts. Since `transcribe-cpp` 0.1.3 the build works around it
-> automatically (it compiles through a short NTFS junction — no admin rights
-> or setup needed), so a normal checkout just builds. If you still hit
-> path-limit errors, see
-> [Windows build fails with path-limit errors](#windows-build-fails-with-path-limit-errors-msb3491--ftk1011--msb6003)
-> in Troubleshooting.
-
-#### Linux
-
-- Build essentials
-- ALSA development libraries
-- Install with:
-
-  ```bash
-  # Ubuntu/Debian
-  sudo apt update
-  sudo apt install build-essential clang libclang-dev libevdev-dev libasound2-dev pkg-config libssl-dev libvulkan-dev vulkan-tools glslc spirv-headers glslang-tools libgtk-3-dev libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev libgtk-layer-shell0 libgtk-layer-shell-dev patchelf cmake libopenblas-dev
-
-  # Fedora/RHEL
-  sudo dnf groupinstall "Development Tools"
-  sudo dnf install alsa-lib-devel pkgconf openssl-devel vulkan-devel glslc \
-    clang clang-devel libevdev-devel \
-    spirv-headers-devel spirv-tools-devel glslang \
-    gtk3-devel webkit2gtk4.1-devel libappindicator-gtk3-devel librsvg2-devel \
-    gtk-layer-shell gtk-layer-shell-devel \
-    cmake openblas-devel
-
-  # Arch Linux
-  sudo pacman -S base-devel clang libevdev shaderc spirv-headers glslang alsa-lib pkgconf openssl vulkan-devel \
-    gtk3 webkit2gtk-4.1 libappindicator-gtk3 librsvg gtk-layer-shell \
-    cmake blas-openblas
-  ```
-
-## Setup Instructions
-
-### 1. Clone the Repository
-
-```bash
-git clone git@github.com:cjpais/Handy.git
-cd Handy
-```
-
-### 2. Install Dependencies
-
-```bash
-bun install
-```
-
-### 3. Start Dev Server
-
-```bash
-bun tauri dev
-```
-
-### 4. Build for Production
-
-```bash
-bun run tauri build
-```
-
-This compiles a release binary and generates platform-specific bundles (deb, rpm, AppImage on Linux; dmg on macOS; msi on Windows).
-
-## Linux Install (from source)
-
-The raw binary (`src-tauri/target/release/handy`) cannot run standalone — it needs Tauri resource files (tray icons, sounds, VAD model) to be co-located at the expected path.
-
-**Install from the deb bundle** (works on any Linux distro):
-
-```bash
-cd /tmp
-ar x /path/to/Handy/src-tauri/target/release/bundle/deb/Handy_*_amd64.deb data.tar.gz
-tar xzf data.tar.gz
-sudo cp usr/bin/handy /usr/bin/
-sudo cp -a usr/lib/. /usr/lib/
-sudo cp -r usr/share/icons/hicolor/* /usr/share/icons/hicolor/
-sudo cp usr/share/applications/Handy.desktop /usr/share/applications/
-```
-
-The runtime libraries live in the app-private `/usr/lib/Handy/` (on the binary's rpath), so no `ldconfig` step is needed.
-
-After subsequent rebuilds, copy the binary and any refreshed runtime libraries:
-
-```bash
-sudo cp src-tauri/target/release/handy /usr/bin/
-sudo mkdir -p /usr/lib/Handy
-sudo cp -a src-tauri/transcribe-libs/. /usr/lib/Handy/
-```
-
-Resources only need re-copying if they change upstream (new icons, sounds, models, etc.).
-
-## Troubleshooting
-
-### macOS Accessibility remains enabled after a local rebuild
-
-Local builds use the ad-hoc `signingIdentity: "-"`. A rebuild can have a new macOS code
-identity while the old **System Settings > Privacy & Security > Accessibility** entry
-remains visibly enabled, leaving Handy on `Waiting...`.
-
-After installing the final bundle at `/Applications/Handy.app`, quit Handy, clear only its
-stale Accessibility record, then reopen it:
-
-```bash
-osascript -e 'tell application id "com.pais.handy" to quit' || true
-tccutil reset Accessibility com.pais.handy
-open /Applications/Handy.app
-```
-
-Grant Accessibility again when prompted. This does not reset Microphone or other TCC
-services, and official releases normally do not need it.
-
-For optional diagnosis, compare the designated requirements of the previous and rebuilt
-bundles:
-
-```bash
-codesign -dr - /path/to/previous/Handy.app 2>&1
-codesign -dr - /Applications/Handy.app 2>&1
-```
-
-An ad-hoc requirement contains a `cdhash`; a changed requirement confirms the rebuild is
-not covered by the old grant. The reset procedure does not require this check.
-
-See [issue #1618](https://github.com/cjpais/Handy/issues/1618) for the related onboarding
-and stale-permission report.
-
-### AppImage build fails on Arch / rolling-release distros
-
-`linuxdeploy` bundles its own `strip` binary which is too old to process system libraries built with newer toolchains on rolling-release distros (Arch, CachyOS, Manjaro, EndeavourOS).
-
-The error from Tauri:
-
-```
-Bundling Handy_*_amd64.AppImage
-failed to bundle project `failed to run linuxdeploy`
-```
-
-Tauri swallows the real linuxdeploy error. To see it, run linuxdeploy manually:
-
-```bash
-cd src-tauri/target/release/bundle/appimage
-~/.cache/tauri/linuxdeploy-x86_64.AppImage --appimage-extract-and-run \
-  --appdir Handy.AppDir --plugin gtk --output appimage
-```
-
-**Workaround:** The binary, deb, and rpm bundles all build fine — only the AppImage step fails. To skip it:
-
-```bash
-bun run tauri build -- --bundles deb
-```
-
-Then install using the deb extraction method above.
-
-### Windows build fails with path-limit errors (`MSB3491` / `FTK1011` / `MSB6003`)
-
-On Windows the native build can fail partway through `transcribe-cpp-sys` with
-any of these (all the same root cause):
-
-```
-error MSB3491: Could not write lines to file "...VCTargetsPath.tlog\VCTargetsPath.lastbuildstate".
-Path: ... exceeds the OS max path limit. The fully qualified file name must be less than 260 characters.
-```
-
-```
-FileTracker : error FTK1011: could not create the new file tracking log file:
-...\vulkan-shaders-gen-build\...\cmTC_xxxxx.tlog\link.write.1.tlog.
-The system cannot find the path specified.
-```
-
-```
-error MSB6003: The specified task executable "CL.exe" could not be run.
-System.IO.DirectoryNotFoundException: Could not find a part of the path ...
-```
-
-This is **not** a code or toolchain problem — it's Windows' legacy 260-character
-path limit (`MAX_PATH`), overflowed by the Vulkan shader generator's nested
-CMake build tree on top of Cargo's already-deep
-`target\release\build\<crate>-<hash>\out\build\...` directory.
-
-Since `transcribe-cpp` 0.1.3 this is mitigated automatically: the native build
-compiles through a short NTFS junction under `%LOCALAPPDATA%\tcs` (created
-without admin rights), so a normal checkout builds with no setup. Enabling
-Windows long paths does **not** reliably help here — MSBuild's native
-`FileTracker` (`tracker.exe`) ignores the long-paths flag — which is why the
-junction, not the registry flag, is the fix.
-
-If you still see the errors above, junction creation was likely blocked
-(filesystem or corporate policy) — the failing build's log then contains a
-`transcribe-cpp-sys: could not create short build junction ...` warning — or
-your checkout is deep enough to overflow even the shortened layout. Work
-around either case with a short Cargo target directory:
+## Source and Frontend Setup
 
 ```powershell
-# Per-shell:
-$env:CARGO_TARGET_DIR = "C:\h"
-
-# Or persist it for all future terminals (note: redirects ALL your
-# Rust projects' build output, not just Handy):
-[Environment]::SetEnvironmentVariable('CARGO_TARGET_DIR', 'C:\h', 'User')
+git clone https://github.com/GrillerGeek/RobeyVoiceWindows.git
+cd RobeyVoiceWindows
+bun install --frozen-lockfile
+bun run build
+bun run lint
+bun run check:translations
+bun run check:model-languages
+bun run check:catalog
+node --test tests/robey-voice-config.test.mjs
 ```
 
-Artifacts then land in `C:\h\release\...` instead of the repo's
-`src-tauri\target\`. Open a **new terminal** if you persisted the variable —
-it is only picked up by freshly started processes. Then `bun run tauri dev`
-and `bun run tauri build` work normally.
+Check out the exact source commit listed in the delivered build manifest when reproducing an artifact. The final build/source commit is pending; the application implementation checkpoint is `8ee2c10`, UI tests are at `5a26243`, and packaging/source changes are through `b3b27c3` before these docs.
 
-### Windows `tauri build` fails at bundling with `program not found`
+For frontend-only work, use `bun run dev` or `bun run preview`. The existing browser tests run with `bun run test:playwright` after installing the matching Playwright browser. These exercise browser code and mocks, not native dictation.
 
-If the build compiles all the way to `Built application at: ...\handy.exe` and
-then fails with:
-
-```
-Signing C:\...\handy.exe with a custom signing command
-failed to bundle project `program not found`
-```
-
-that's the code-signing step: `tauri.conf.json` configures a custom
-`signCommand` (`trusted-signing-cli`, Azure Trusted Signing) that only exists
-in the release CI environment. Local development doesn't need it:
+For native development, after provisioning the prerequisites and runtime staging inputs, use:
 
 ```powershell
-# Development (no bundling/signing at all):
 bun run tauri dev
-
-# Or compile a release binary without the installer/signing step:
-bun run tauri build --no-bundle
+bun run tauri build --target x86_64-pc-windows-msvc --bundles nsis -- --locked
 ```
+
+The common `src-tauri/tauri.conf.json` and normal platform merge from `tauri.windows.conf.json` are canonical. Do not use an additional `--config` or `TAURI_CONFIG` profile to obtain a passing build. The inherited `build.rs` stages the native `transcribe-libs` payload; a raw `handy.exe` without its resources and runtime DLLs is not a distributable app. The internal filename remains inherited while public product metadata identifies Robey Voice.
+
+## Native Preview Workflow
+
+Run [`.github/workflows/robey-windows.yml`](.github/workflows/robey-windows.yml) with `workflow_dispatch` in `GrillerGeek/RobeyVoiceWindows` at the intended source ref. This is a manual build, not an automatic release publisher. A successful run is still pending.
+
+The workflow:
+
+1. Selects the source, Bun, Rust/MSVC components and Vulkan SDK; installs locked frontend dependencies.
+2. Runs [`robey-windows-setup.ps1`](scripts/robey-windows-setup.ps1) to verify the tracked VAD hash, locate licensed Visual Studio CRT/OpenMP redistributables, provision SPIRV-Headers and export staging/build inputs to later CI steps. This script uses GitHub runner environment files; it is not a standalone end-user installer.
+3. Runs frontend/configuration checks and Rust formatting, library tests and clippy with locked resolution.
+4. Generates full Rust, frontend and native license inventories with pinned cargo-about and [`robey-license-inventory.mjs`](scripts/robey-license-inventory.mjs). Missing license evidence fails the build.
+5. Builds only the unsigned x64 NSIS installer through the normal merged configuration. No upstream Azure signing command, signing credentials, updater artifacts, or latest-manifest/release publishing is used.
+6. Runs [`robey-windows-audit.ps1`](scripts/robey-windows-audit.ps1) against the actual installer payload and packaged `handy.exe --list-devices`. This must find the required resources/native and app-local VC++ DLLs and a CPU device. Device enumeration is not a transcription, microphone or paste test.
+7. Runs [`robey-windows-manifest.ps1`](scripts/robey-windows-manifest.ps1) and uploads `robey-voice-windows-x64`, containing the installer, `BUILD-FACTS.json`, `SHA256SUMS.txt`, evidence and notices. The manifest records facts, not a signed attestation. Failure diagnostics use a separate failure artifact.
+
+The build verifies the existing bundled Silero VAD `silero-vad-v6.2-F32.gguf` SHA256 `0d871a800c420fdd5d1b17a3aea4296d1c39608f0ff4a9295eb76457eb1c88e6`. It does not silently download or replace this resource. Speech transcription weights are downloaded later by the user's explicit model selection. See the [Silero notice](src-tauri/resources/licenses/SILERO-NOTICE.txt) and model references in the generated inventory.
+
+No Windows signing credentials are available; the preview has no verified publisher signature. An Apple certificate is not applicable to Windows publisher signing. Do not add signing workarounds or suppress Windows prompts. If installation is blocked by device policy, record the block and stop.
+
+## Validation and Provenance
+
+The [validation report](docs/robey-voice-windows-validation.md) distinguishes passed local checks, environmental blockers and unverified native/human gates. Record the exact source commit, workflow run URL/status, runner image and tool versions, installer name/SHA256, lockfile/resource hashes, payload audit and device output from the actual native artifact before delivery. All are pending until produced; neither a frontend build nor a Mac build substitutes for them.
+
+Useful checks on a provisioned native development host:
+
+```powershell
+cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
+cargo test --locked --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-msvc --lib
+cargo clippy --locked --manifest-path src-tauri/Cargo.toml --target x86_64-pc-windows-msvc --all-targets
+bun run test:keyboard
+bun src/components/settings/history/clipboard.test.ts
+bun src/components/update-checker/portableInstaller.test.ts
+```
+
+Use formatting checks scoped to tracked/changed files when task-local caches are present; do not run repository-wide write-formatting over private runtime outputs. Preserve existing tests. The Mac baseline's rustfmt check was blocked because that component was absent; native Rust checks have not yet run.
+
+Keep Handy's complete MIT [LICENSE](LICENSE), separate GPL-3.0-only original artwork/source, and all dependency/model/runtime notices. A successful source MIT assertion is not a complete distributed-package license audit.
