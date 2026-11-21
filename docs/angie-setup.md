@@ -4,19 +4,21 @@ Robey Voice 0.1.0 is a local dictation preview for **Windows 11 x64 on an Intel 
 
 ## Before Installing
 
-Distribution target: [Robey Voice v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1), with this [Windows installer](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/Robey%20Voice_0.1.0_x64-setup.exe). Use these assets after Jason makes the release available.
+[Robey Voice v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1) was published on 2026-11-21 at 18:06:42 UTC. Download the public [`RobeyVoice-0.1.0-windows-x64-setup.exe`](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/RobeyVoice-0.1.0-windows-x64-setup.exe). The public installer download was verified against the exact byte count and SHA256 below. All seven public asset sizes/digests match the prepared files, and the tag resolves to exact built source `e0c4233952f98d754db7207052e25948186bee4d`.
 
-File: `Robey Voice_0.1.0_x64-setup.exe` (16,415,893 bytes).  
+File: `RobeyVoice-0.1.0-windows-x64-setup.exe` (16,415,893 bytes).  
 SHA256: `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`.
+
+The public filename differs from the unchanged CI installer `Robey Voice_0.1.0_x64-setup.exe` inside the evidence ZIP. They contain exactly the same 16,415,893 bytes and SHA256 above; the ZIP and its original 28-entry CI checksum manifest are unchanged. `RELEASE-SHA256SUMS.txt` covers the public release filenames.
 
 App version is 0.1.0. The same release includes `RELEASE-SHA256SUMS.txt` for its assets, `RobeyVoice-0.1.0-windows-x64-evidence.zip`, `BUILD-FACTS.json` and `artifact-audit-report.md`; the evidence ZIP contains the original CI `SHA256SUMS.txt`. The [release notes](robey-voice-windows-release-notes.md) and [validation report](robey-voice-windows-validation.md) distinguish the successful CI package check from pending testing on your PC.
 
 The preview is an unsigned NSIS `.exe`. It has no verified Windows publisher signature. First model download and setup of a missing Microsoft WebView2 runtime need internet access. Once the model and runtime are installed, local dictation is intended to work offline; the native offline check is still pending.
 
-After Jason publishes the file, open PowerShell and check the download:
+After downloading the corrected public file, open PowerShell and check it:
 
 ```powershell
-Get-FileHash -Algorithm SHA256 -LiteralPath "$HOME\Downloads\Robey Voice_0.1.0_x64-setup.exe"
+Get-FileHash -Algorithm SHA256 -LiteralPath "$HOME\Downloads\RobeyVoice-0.1.0-windows-x64-setup.exe"
 ```
 
 Compare the entire hash with Jason's supplied SHA256. If it differs, stop and report it. A matching checksum checks that you received the specified file; it does not provide a publisher signature.

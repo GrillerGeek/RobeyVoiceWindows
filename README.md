@@ -15,9 +15,9 @@ Source/configuration checks passed 7/7 and the browser suite passed 13/13. [Nati
 
 ## Quick Start
 
-The intended distribution target is [v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1), with a [standalone installer](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/Robey%20Voice_0.1.0_x64-setup.exe), `RobeyVoice-0.1.0-windows-x64-evidence.zip`, SHA256SUMS and BUILD-FACTS. Product/file version is 0.1.0. Use assets after Jason makes that release available. See the [release notes](docs/robey-voice-windows-release-notes.md). Do not use Handy's releases or package-manager entries as Robey Voice downloads.
+[v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1) was published on 2026-11-21 at 18:06:42 UTC. The public installer is named [`RobeyVoice-0.1.0-windows-x64-setup.exe`](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/RobeyVoice-0.1.0-windows-x64-setup.exe); the downloaded public file was verified as 16,415,893 bytes with SHA256 `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`. All seven public asset sizes/digests match the prepared files, and the release tag resolves to exact built source `e0c4233952f98d754db7207052e25948186bee4d`. The release also carries the evidence ZIP, source archive, BUILD-FACTS and checksum manifests. Product/file version is 0.1.0. See the [release notes](docs/robey-voice-windows-release-notes.md).
 
-After Jason publishes the audited installer, follow [Angie's setup guide](docs/angie-setup.md): verify the file, install under normal Windows policies, allow microphone access, choose a local model, and try a short sentence in normal, non-elevated Notepad. If unsigned software is blocked, stop and report the message to Jason. Do not disable security protections.
+Download the installer and follow [Angie's setup guide](docs/angie-setup.md): verify the file, install under normal Windows policies, allow microphone access, choose a local model, and try a short sentence in normal, non-elevated Notepad. If unsigned software is blocked, stop and report the message to Jason. Do not disable security protections.
 
 ## How It Works
 

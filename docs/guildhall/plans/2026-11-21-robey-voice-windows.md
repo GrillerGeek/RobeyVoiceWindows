@@ -1,7 +1,7 @@
 # Robey Voice Windows execution plan
 
 Started: 2026-11-21. Mode: bounded feature implementation, based on Handy v0.10.1.
-Status: exact candidate `e0c4233` passed native Windows run `44927384462`; independent artifact audit and closing review are underway.
+Status: bounded Windows preview implementation and release delivery complete; native interactive Windows and Angie acceptance remain pending.
 
 ## Context and authority
 
@@ -59,8 +59,8 @@ Canonical review surface: this repository's Markdown Spec, plan, reports and sou
 - [x] Generate installer checksum, source/build/resource provenance and explicit unsigned status.
 - [x] Run independent security, reliability, operations, observability, accessibility and UI verification; write scoped documentation (final package facts pending).
 - [x] Required post-green technical review of all relevant final source/tests/docs and evidence.
-- [ ] Commit source, preserve auditable baseline, publish a clearly labeled preview with exact downloadable artifact and source.
-- [ ] Deliver short install/setup/recovery instructions and honest validation report.
+- [x] Commit source, preserve auditable baseline, publish a clearly labeled preview with exact downloadable artifact and source.
+- [x] Deliver short install/setup/recovery instructions and honest validation report.
 - [ ] Jason/Angie perform native interactive Windows acceptance and review branding; record pending until actually observed.
 
 Test author, implementer and post-green reviewer receive fresh contexts. Tests precede implementation. Disjoint prerequisite toolchain work may overlap with tests. Documentation writes follow the relevant implementation. Reviews are batched within capacity and all selected results are awaited. The orchestrator writes only this plan and helper-managed progress, while handling read-only verification and Git/delivery operations.
@@ -204,3 +204,15 @@ The exact source archive `RobeyVoice-0.1.0-source-e0c4233.tar.gz` has SHA256 `58
 Fresh independent reviewer `windows_closing_review` returned **PASS for source/configuration and native packaging closure, permitting the labeled built-preview publication**. It reviewed all 137 changed tracked paths, current untracked reports, full current Spec, every Expectation/edge/Boundary/Deliverable and actual native/source evidence. It independently reran 7/7 configuration assertions, verified frozen hashes and empty inherited-test diff, RED/GREEN logs, 28 artifact checksums/29 files, six source integrity hashes, source/CI ZIP digests and 13 notice hashes. No new blocker/high/medium findings or missing mandatory source/native automation. Native interactive Windows/Angie gates remain pending. The final execution-report closing entries, this plan/progress, PR draft and observed release publication are permitted pending orchestration outputs, not missing implementation.
 
 Residuals retain owners: low CI subprocess deadlines at audit.ps1:27/file-probe.ps1:28/license-inventory.mjs:147 (Windows build maintainer next maintenance; global deadline exists); low manual-link error feedback at UpdateChecker.tsx:18 (UI maintainer); information-level broader-locale prose and the two upstream MIT source-text gaps (UI/distribution maintainers). No unrelated source/test/substantive documentation changes are authorized after this verdict without re-review. The closing-report recorder will save the actual verdict; root verifies its saved content before publication.
+
+## Published delivery and final reconciliation
+
+Published [v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1) at 2026-11-21 18:06:42 UTC as a non-draft prerelease. The tag is verified to resolve to exact built source `e0c4233952f98d754db7207052e25948186bee4d`. Documentation-only main is intentionally ahead. All seven release asset sizes/API SHA256 digests match the prepared copies; the exact source archive, unchanged official evidence ZIP, installer, build facts, original CI checksum manifest, release checksum manifest and independent audit report are durably published.
+
+GitHub normalized spaces in the original uploaded asset name. The first public-link check caught that naming difference; root renamed the public download to [`RobeyVoice-0.1.0-windows-x64-setup.exe`](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/RobeyVoice-0.1.0-windows-x64-setup.exe), preserving every installer byte and its SHA256 `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`. The source CI filename inside the unchanged evidence ZIP remains `Robey Voice_0.1.0_x64-setup.exe`. Public release checksums use the public filename. Root downloaded the corrected public asset and recomputed its full hash/16,415,893-byte size, and an unauthenticated direct-link HEAD returned HTTP 200 with that size.
+
+Only README, Angie setup and release notes needed the delivery-name correction. Independent focused re-review returned PASS, confirmed all seven asset digests, release checksum filenames, downloaded bytes, exact source tag and unchanged core source/config/tests/workflow/lockfiles. No blockers; prior full closing PASS remains applicable. Root synchronized the actual GitHub release body with the reviewed corrected notes and fetched/asserted exact text equality. No other substantive implementation/test/documentation changes followed.
+
+Rook produced the required stdout-only integration PR draft, title `feat: deliver an audited Robey Voice Windows preview`, including the operations runbook verbatim and accurately pending native/human gates. No upstream PR or outreach was created; this owned fork already contains the work on main. Final execution-report closing verdict was saved and verified. Documentation commit `b78144ef656cd7a999ba884f0efcd5d7ddbd13d5` also passed source-quality run `44933590063`; final delivery-doc formatting passed after the filename correction.
+
+Remaining human waypoint is deliberately upcoming, not completed: Windows 11 x64 Intel/AMD desktop/policy, microphone, shortcuts, paste/history, offline/recovery, concurrent Handy install/upgrade/removal/data retention, missing WebView2, accessibility, hardware suitability and Angie/Jason visual/usability acceptance. The source/native-package quest is complete; none of these human checks is inferred. Follow-up technical owners remain as recorded above.

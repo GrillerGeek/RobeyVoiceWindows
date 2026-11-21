@@ -1,6 +1,6 @@
 # Robey Voice 0.1.0 Windows preview
 
-Intended release identifier: `v0.1.0-preview.1`. App/file version: 0.1.0. Exact installer source: `e0c4233952f98d754db7207052e25948186bee4d`.
+Release: [v0.1.0-preview.1](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/tag/v0.1.0-preview.1), published 2026-11-21 18:06:42 UTC. App/file version: 0.1.0. Exact installer source: `e0c4233952f98d754db7207052e25948186bee4d`.
 
 Local dictation preview for Windows 11 x64 on Intel or AMD PCs, based on Handy v0.10.1. Core dictation requires no account, subscription, API key or paid service. Initial model download and setup of a missing WebView2 runtime need internet access. Cloud post-processing is optional and off by default; updates are manual. Ctrl+Space supports hold/toggle and rebinding. Local history defaults to five entries and can include recordings; review/delete them through the app's controls.
 
@@ -8,9 +8,11 @@ Local dictation preview for Windows 11 x64 on Intel or AMD PCs, based on Handy v
 
 [Native run 44927384462](https://github.com/GrillerGeek/RobeyVoiceWindows/actions/runs/44927384462) passed NSIS build, silent temporary portable installation into a path with spaces, runtime/payload/CPU audit and synthetic CPU file transcription. Rust: 342 passed, 0 failed, 20 ignored; fmt/clippy passed with clippy warnings. Configuration checks passed 7/7 and browser tests 13/13. Independent artifact audit passed 116 factual checks with no blocking packaging findings.
 
-Assets prepared for this release:
+Public installer download verified against the byte count/SHA256 below. All seven public asset sizes/digests match the prepared files, and the release tag resolves to exact built source `e0c4233952f98d754db7207052e25948186bee4d`.
 
-- `Robey Voice_0.1.0_x64-setup.exe` — 16,415,893 bytes; SHA256 `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`.
+Release assets:
+
+- [`RobeyVoice-0.1.0-windows-x64-setup.exe`](https://github.com/GrillerGeek/RobeyVoiceWindows/releases/download/v0.1.0-preview.1/RobeyVoice-0.1.0-windows-x64-setup.exe) — 16,415,893 bytes; SHA256 `21a50c13f4f625459e02f64cb6699eb22635b8880f0dcb27ba0b772fcd5203f5`.
 - `RobeyVoice-0.1.0-windows-x64-evidence.zip` — unchanged official CI ZIP, 16,525,597 bytes; SHA256 `003e1862560e9121de82c5af985d75e029c960a0eac5dc902d22fcfeb233690e`.
 - `RobeyVoice-0.1.0-source-e0c4233.tar.gz`, `BUILD-FACTS.json`, `artifact-audit-report.md`, original CI `SHA256SUMS.txt`, and release-file `RELEASE-SHA256SUMS.txt`.
 
