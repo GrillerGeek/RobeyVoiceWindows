@@ -116,12 +116,14 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
               : t("settings.general.shortcut.pressKeys")}
           </div>
         ) : (
-          <div
-            className="px-2 py-1 text-sm font-semibold bg-wash border border-line-strong hover:bg-logo-primary/10 rounded-md cursor-pointer hover:border-logo-primary"
+          <button
+            type="button"
+            aria-label={`${translatedName}: ${formatKeyCombination(binding.current_binding, osType)}`}
+            className="px-2 py-1 text-sm font-semibold bg-wash border border-line-strong hover:bg-logo-primary/10 rounded-md cursor-pointer hover:border-logo-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             onClick={start}
           >
             {formatKeyCombination(binding.current_binding, osType)}
-          </div>
+          </button>
         )}
         <ResetButton
           ariaLabel={t("common.resetSetting", { setting: translatedName })}

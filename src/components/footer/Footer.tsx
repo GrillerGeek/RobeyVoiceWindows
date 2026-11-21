@@ -42,8 +42,8 @@ const Footer: React.FC<FooterProps> = ({ onShowHistory }) => {
           <div className="flex items-center gap-1">
             <UpdateChecker />
             <span>•</span>
-            {/* eslint-disable-next-line i18next/no-literal-string */}
             <span>
+              {/* eslint-disable-next-line i18next/no-literal-string */}
               {t("robeyVoice.name")} v{version}
             </span>
           </div>

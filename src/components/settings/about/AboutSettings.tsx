@@ -47,8 +47,8 @@ export const AboutSettings: React.FC = () => {
           description={t("settings.about.version.description")}
           grouped={true}
         >
-          {/* eslint-disable-next-line i18next/no-literal-string */}
           <span className="text-sm font-mono">
+            {/* eslint-disable-next-line i18next/no-literal-string */}
             {t("robeyVoice.name")} v{version}
           </span>
         </SettingContainer>
@@ -95,6 +95,7 @@ export const AboutSettings: React.FC = () => {
           <Button
             variant="secondary"
             size="md"
+            className="focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             onClick={() =>
               openUrl("https://github.com/cjpais/Handy/blob/v0.10.1/LICENSE")
             }
